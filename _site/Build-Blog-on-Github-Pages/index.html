@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>第一篇文章就记录下这个博客搭建的过程吧！ – Bigmonstercai – Is Learning</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="年纪大了，脑子越来越不好使了，小时候学点儿啥分分钟就搞定，现在天天都在研究配置环境。这不，想搭建个博客，又折腾了三天……
+" />
+    <meta property="og:description" content="年纪大了，脑子越来越不好使了，小时候学点儿啥分分钟就搞定，现在天天都在研究配置环境。这不，想搭建个博客，又折腾了三天……
+" />
+    
+    <meta name="author" content="Bigmonstercai" />
+
+    
+    <meta property="og:title" content="第一篇文章就记录下这个博客搭建的过程吧！" />
+    <meta property="twitter:title" content="第一篇文章就记录下这个博客搭建的过程吧！" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Bigmonstercai - Is Learning" href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="/images/logo.jpg" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">Bigmonstercai</a></h1>
+            <p class="site-description">Is Learning</p>
+          </div>
+
+          <nav>
+            <a href="/">Blog</a>
+            <a href="/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>第一篇文章就记录下这个博客搭建的过程吧！</h1>
+
+  <div class="entry">
+    <p>年纪大了，脑子越来越不好使了，小时候学点儿啥分分钟就搞定，现在天天都在研究配置环境。这不，想搭建个博客，又折腾了三天……</p>
+
+<p>初中时就写过博客，那时候纯属为了玩，做个整人的视频贴上面好让大家都去看。现在又有了一个搭建博客的想法，主要是想把平时学习到的方方面面的知识都做个记录，以便以后随时查看。</p>
+
+<p>为啥就选了这个Github Pages来搭建博客呢？</p>
+
+<p>首先吧，小时候用的百度空间说关就关了，而Github上托管着这么多项目的代码，肯定不能那么轻易就没了。</p>
+
+<p>其次Github就像一个免流量无限大的主机空间，往上面传什么都可以，图片、视频都可以和网站保存在一起，不像其他博客，还得找优酷啊、百度网盘啊托管各种资源，哪天说给删了就给删了，几年后肯定都是死链。</p>
+
+<p>最后，当然，Github作为全球最大的同性交友网站，连给大家的主页域名都是.io，逼格就是高啊！不用他用谁？</p>
+
+<p>总之，使用Github Pages搭建博客，既不像使用现有的博客服务那么简单，在浏览器里就可以直接利用在线的编辑器完成日志的编写，也不像搭建一个完整的独立博客那么复杂，不用考虑服务器方面的问题。它就是托管在Github上的一个项目，你可以自由定制，利用jekyll和Github配合还可以在本地进行调试。发布新文章就是新建一个文本文档，配上Liquid脚本代码就可以方便的利用网页模板生成一个个页面。而且在Github上有大量的主题，只需要轻轻地fork一下，就可以“据为己有”，大大地方便了我们这种设计苦手。</p>
+
+<p>下面，我就记录下我这个博客搭建的过程，给其他想在Github Pages上搭建博客的同学一些参考，也方便未来我想把这个博客推倒重盖时，不用再花那么多时间……</p>
+
+<h1>在Github上新建项目库</h1>
+
+<p>既然选择了Github Pages，那肯定已经注册过Github账号了吧？（废话！不注册怎么交友）</p>
+
+<p>Github Pages分为用户和组织站点及项目站点两种，用户和组织站点就是可以直接使用username.github.io访问的主页，项目站点则是通过username.github.io/repository来访问的。作为个人博客，肯定是第一种逼格更高，.io后面还有一大坨单词多难看！所以博客搭建选用用户和组织站点。</p>
+
+<p>然后可以跟着<a href="https://pages.github.com/">官方的教程</a>先建立一个名为&quot;username.github.io&quot;的项目库（username为Github账号），并利用Git同步到本地。</p>
+
+<h1>自动生成（可选）</h1>
+
+<p>在Github上可以自动生成一个主页，不过这个主页有点儿太简单，都不能显示最新的日志，根本就没用到Jekyll，连用来学习的价值都没有。</p>
+
+<h4>进入&quot;username.github.io&quot;项目库,点击右侧的“Settings”</h4>
+
+<p><img src="/images//Build-Blog-on-Github-Pages//1.png" alt="1"></p>
+
+<h4>点击“Launch automatic page generator”</h4>
+
+<p><img src="/images//Build-Blog-on-Github-Pages//2.png" alt="2"></p>
+
+<h4>输入页面标题（Page name）、标语（Tagline）和正文，点击“Continue to layouts”</h4>
+
+<p><img src="/images//Build-Blog-on-Github-Pages//3.png" alt="3"></p>
+
+<h4>最后选择一个喜欢的模板，点击“Publish page”就完成啦！</h4>
+
+<p><img src="/images//Build-Blog-on-Github-Pages//4.png" alt="4"></p>
+
+<p>自动生成页面虽然操作简单，也还挺漂亮，但是只有这一个页面，如果想增加功能、新建日志恐怕需要有一些HTML和CSS的基础了（反正我没有）。总之如果想建立一个博客，自动生成之后还有很多路要走，不是很推荐使用这个方法。</p>
+
+<h1>手工搭建</h1>
+
+<p>说是手工搭建，其实也是可以利用网上现成的模板的，不过在这之前我们最好把Jekyll安装好，方便在本地进行调试。</p>
+
+<h2>安装Jekyll</h2>
+
+<p>这一步我依然是安装<a href="https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll">官方教程</a>走的。不用理会那个GitHub Pages Gem，直接从安装Ruby开始即可，windows用户可以直接下载<a href="http://rubyinstaller.org/downloads/">RubyInstallers</a>安装。不要着急，在这个页面中往下翻，有个DEVELOPMENT KIT,这个也是需要用到的，下载合适自己使用的版本(32位和64位一定不要弄错)。</p>
+
+<p>安装RubyInstallers，确保Ruby的bin目录在你的环境变量的path中，然后在命令行中输入 <code>gem update --system</code> 来升级gem。</p>
+
+  </div>
+
+  <div class="date">
+    Written on September 16, 2015
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:bigmonstercai@qq.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/bigmonstercai"><i class="svg-icon github"></i></a>
+
+
+
+
+<a href="https://www.twitter.com/bigmonstercai"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

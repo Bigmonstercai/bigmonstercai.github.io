@@ -4,12 +4,9 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+蔡大魔王的个人博客，记录学习到的各方各面的知识，以作备忘。
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[bigmonstercai@qq.com](mailto:bigmonstercai@qq.com)
