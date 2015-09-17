@@ -156,6 +156,21 @@ img {
   max-width: 100%;
 }
 
+code {
+  background: #eee;
+  font-family: Courier;
+  font-style: normal;
+  padding: 0.1em 0.5em;
+}
+
+blockquote {
+  display: block;
+  background: #eee;
+  font-family: Courier;
+  font-style: normal;
+  margin: 0;
+}
+
 .gmnoprint img {
   max-width: none;
 }
@@ -292,10 +307,10 @@ nav a {
 .post blockquote {
   margin: 1.8em .8em;
   border-left: 2px solid #666;
-  padding: 0.1em 1em;
-  color: #666;
-  font-size: 22px;
-  font-style: italic;
+  padding: 0.1em 0.5em;
+  background: #eee;
+  font-family: Courier;
+  font-style: normal;
 }
 .post .comments {
   margin-top: 10px;

@@ -110,6 +110,21 @@ img {
   max-width: 100%;
 }
 
+code {
+  background: $lightGray;
+  font-family : Courier;
+  font-style: normal;
+  padding: 0.1em 0.5em;
+}
+
+blockquote {
+    display: block;
+    background: $lightGray;
+    font-family : Courier;
+    font-style: normal;
+    margin : 0;
+}
+
 // Fixes images in popup boxes from Google Translate
 .gmnoprint img {
   max-width: none;
@@ -255,10 +270,10 @@ nav {
   blockquote {
     margin: 1.8em .8em;
     border-left: 2px solid $gray;
-    padding: 0.1em 1em;
-    color: $gray;
-    font-size: 22px;
-    font-style: italic;
+    padding: 0.1em 0.5em;
+    background: $lightGray;
+    font-family : Courier;
+    font-style: normal;
   }
 
   .comments {
