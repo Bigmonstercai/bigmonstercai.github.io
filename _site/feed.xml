@@ -7,8 +7,34 @@
     <atom:link href="http://bigmonstercai.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>利用Python从音乐文件中提取专辑封面</title>
+        <description>&lt;p&gt;&amp;emsp;&amp;emsp;使用iTunes管理音乐文件时，我给每张专辑都设置了专辑封面。iTunes把专辑封面图片嵌入到了每一个音频文件中，当我们在资源管理器中以缩略图的形式查看这些文件时，就可以看到每个音频文件显示的都是专辑封面。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//1.png&quot; alt=&quot;1&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;emsp;&amp;emsp;在我突发奇想制作&lt;a href=&quot;https://github.com/Bigmonstercai/Music-Album-with-music-albums/&quot;&gt;“来自封面们的封面”&lt;/a&gt;这个音乐播放可视化效果时，我需要从这些音频文件中提取出专辑封面，本文将具体探讨利用Python提取专辑封面的方法。&lt;/p&gt;
+
+&lt;h1&gt;&lt;a name=&quot;MP3&quot;&gt;&lt;/h1&gt;
+</description>
+        <pubDate>Mon, 21 Sep 2015 00:00:00 +0800</pubDate>
+        <link>http://bigmonstercai.github.io/Get-Album-Cover-from-Music/</link>
+        <guid isPermaLink="true">http://bigmonstercai.github.io/Get-Album-Cover-from-Music/</guid>
+      </item>
+    
+      <item>
         <title>第一篇文章就记录下这个博客搭建的过程吧！</title>
-        <description>&lt;p&gt;&amp;emsp;&amp;emsp;年纪大了，脑子越来越不好使了，小时候学点儿啥分分钟就搞定，现在天天都在研究配置环境。这不，想搭建个博客，又折腾了三天……&lt;/p&gt;
+        <description>&lt;blockquote&gt;
+    &lt;p&gt;&lt;a href=&quot;#Github&quot;&gt; - 在Github上新建项目库&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;#auto&quot;&gt; - 自动生成（可选）&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;#manual&quot;&gt; - 手工搭建&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;#Jekyll&quot;&gt; &amp;emsp;- 安装Jekyll&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;#self&quot;&gt; &amp;emsp;- 自建站点（可选）&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;#module&quot;&gt; &amp;emsp;- 使用现有模板&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;#markdown&quot;&gt; - markdown语言&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;#tages&quot;&gt; - 日志分类&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&amp;emsp;&amp;emsp;年纪大了，脑子越来越不好使了，小时候学点儿啥分分钟就搞定，现在天天都在研究配置环境。这不，想搭建个博客，又折腾了三天……&lt;/p&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;初中时就写过博客，那时候纯属为了玩，做个整人的视频贴上面好让大家都去看。现在又有了一个搭建博客的想法，主要是想把平时学习到的方方面面的知识都做个记录，以便以后随时查看。&lt;/p&gt;
 
@@ -24,7 +50,7 @@
 
 &lt;p&gt;&amp;emsp;&amp;emsp;下面，我就记录下我这个博客搭建的过程，给其他想在Github Pages上搭建博客的同学一些参考，也方便未来我想把这个博客推倒重盖时，不用再花那么多时间……&lt;/p&gt;
 
-&lt;h1&gt;在Github上新建项目库&lt;/h1&gt;
+&lt;h1&gt;&lt;a name=&quot;Github&quot;&gt;在Github上新建项目库&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;既然选择了Github Pages，那肯定已经注册过Github账号了吧？（废话！不注册怎么交友）&lt;/p&gt;
 
@@ -32,7 +58,7 @@
 
 &lt;p&gt;&amp;emsp;&amp;emsp;然后可以跟着&lt;a href=&quot;https://pages.github.com/&quot;&gt;官方的教程&lt;/a&gt;先建立一个名为&amp;quot;username.github.io&amp;quot;的项目库（username为Github账号），并利用Git同步到本地。&lt;/p&gt;
 
-&lt;h1&gt;自动生成（可选）&lt;/h1&gt;
+&lt;h1&gt;&lt;a name=&quot;auto&quot;&gt;自动生成（可选）&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;在Github上可以自动生成一个主页，不过这个主页有点儿太简单，都不能显示最新的日志，根本就没用到Jekyll，连用来学习的价值都没有。&lt;/p&gt;
 
@@ -54,11 +80,11 @@
 
 &lt;p&gt;&amp;emsp;&amp;emsp;自动生成页面虽然操作简单，也还挺漂亮，但是只有这一个页面，如果想增加功能、新建日志恐怕需要有一些HTML和CSS的基础了（反正我没有）。总之如果想建立一个博客，自动生成之后还有很多路要走，不是很推荐使用这个方法。&lt;/p&gt;
 
-&lt;h1&gt;手工搭建&lt;/h1&gt;
+&lt;h1&gt;&lt;a name=&quot;manual&quot;&gt;手工搭建&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;说是手工搭建，其实也是可以利用网上现成的模板的，不过在这之前我们最好把Jekyll安装好，方便在本地进行调试。&lt;/p&gt;
 
-&lt;h2&gt;安装Jekyll&lt;/h2&gt;
+&lt;h2&gt;&lt;a name=&quot;Jekyll&quot;&gt;安装Jekyll&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;这一步我依然是安装&lt;a href=&quot;https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll&quot;&gt;官方教程&lt;/a&gt;走的。不用理会那个GitHub Pages Gem，直接从安装Ruby开始即可，windows用户可以直接下载&lt;a href=&quot;http://rubyinstaller.org/downloads/&quot;&gt;RubyInstallers&lt;/a&gt;安装。不要着急，在这个页面中往下翻，有个DEVELOPMENT KIT,这个也是需要用到的，下载合适自己使用的版本(32位和64位一定不要弄错)。&lt;/p&gt;
 
@@ -83,7 +109,7 @@
 &lt;/blockquote&gt;
 &amp;emsp;&amp;emsp;然后在命令提示行执行&lt;code&gt;bundle install&lt;/code&gt;即可完成Jekyll的安装。如果没有安装Bundler，那直接在命令行执行&lt;code&gt;install github-pages&lt;/code&gt;也可以完成安装。&lt;/p&gt;
 
-&lt;h2&gt;自建站点（可选）&lt;/h2&gt;
+&lt;h2&gt;&lt;a name=&quot;self&quot;&gt;自建站点（可选）&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;配置完环境，就可以开始建站了。我们当然可以选择自己从头建立一个站点，这部分内容可以跟着&lt;a href=&quot;http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html&quot;&gt;阮一峰老师的教程&lt;/a&gt;来做,创建项目的步骤我们已经在之前做完了，可以直接从第二步创建设置文件开始。由于阮一峰老师这个教程是2012年写的，估计那时候还没有.io这种个人主页，所以还需要创建名为‘gh-pages’的分支，现在这种做法只针对项目站点了，在项目库username.github.io中我们只需要在master分支下进行操作即可。&lt;/p&gt;
 
@@ -93,13 +119,13 @@
 
 &lt;p&gt;&amp;emsp;&amp;emsp;在项目库根目录下的&amp;quot;_posts&amp;quot;文件夹里存放的是所有的日志，创作新的日志只需在这个文件夹新建一个文本文件即可。可以采用html格式或md格式两种，都可以使用Liquid模板语言来调用变量填充页面，在md格式文件中也可以正常使用html元素。日志的文件名需为“年-月-日-标题.后缀名”的格式，jekyll在生成站点时可以自动解析文件名。在每篇文章开始的地方，需要有一个yaml文件头，用来设置一些属性，用”---“标记开始和结束，每行设置一种元数据。通常需要设置的有layout来选择模板，title来设置文章标题（不设置的话则与文件名中的标题相同），excerpt可以设置摘要（不设置的话则默认为文章第一段）。&lt;/p&gt;
 
-&lt;p&gt;&amp;emsp;&amp;emsp;在项目库根目录下创建index.html或index.md来作为整个站点的首页，具体格式与日志的格式没有什么区别。通常在首页使用&lt;code&gt;{ % for post in site.posts % }&lt;/code&gt;来对所有日志进行遍历，然后调用每一篇日志的标题、摘要等信息显示在主页上。&lt;/p&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;在项目库根目录下创建index.html或index.md来作为整个站点的首页，具体格式与日志的格式没有什么区别。通常在首页使用&lt;code&gt;&lt;a&gt;{&lt;/a&gt;% for post in site.posts %&lt;a&gt;}&lt;/a&gt;&lt;/code&gt;来对所有日志进行遍历，然后调用每一篇日志的标题、摘要等信息显示在主页上。&lt;/p&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;此外还可以在项目库根目录下建立about、404等其他非日志页面。&lt;/p&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;修改完所有页面后，在命令行中运行&lt;code&gt;bundle exec jekyll serve&lt;/code&gt;(如果安装了bundler)或者&lt;code&gt;jekyll serve&lt;/code&gt;，等到提示站点生成完成后，在浏览器中打开&lt;a href=&quot;http://localhost:4000/&quot;&gt;localhost:4000&lt;/a&gt;即可在本地预览调试你的页面了。&lt;/p&gt;
 
-&lt;h2&gt;使用现有模板&lt;/h2&gt;
+&lt;h2&gt;&lt;a name=&quot;module&quot;&gt;使用现有模板&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;对于我们这种没什么HTML和CSS基础的人来说，从阮老师建立的基本框架到一个完整美观的站点无异于跟着网上各种教绘画的教程学绘画一般。&lt;/p&gt;
 
@@ -113,7 +139,7 @@
 
 &lt;p&gt;&amp;emsp;&amp;emsp;建立这个博客，我使用的是&lt;a href=&quot;https://github.com/barryclark/jekyll-now&quot;&gt;Jekyll-now&lt;/a&gt;。这个模板功能完整但又很简单，稍微熟悉一下就可以着手进行修改。基本上把&amp;quot;_config.yml&amp;quot;中的信息修改一下，把images文件夹中的logo修改一下，就可以开始写自己的日志了。需要注意的是，虽然logo采用jpg格式的文件在本地调试都没有问题，但是上传到Github上之后可能会无法显示，因此使用的图片都采用png格式为妥。&lt;/p&gt;
 
-&lt;h1&gt;markdown语言&lt;/h1&gt;
+&lt;h1&gt;&lt;a name=&quot;markdown&quot;&gt;markdown语言&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;下面说说markdown语言。我这篇日志是用md格式写的，其中使用到了markdown语言。&lt;/p&gt;
 
@@ -132,7 +158,7 @@
 
 &lt;p&gt;&amp;emsp;&amp;emsp;此外还可以使用\来对markdown语言中用到的符号进行转义。使用&amp;amp;emsp;表示中文空格，使用&amp;amp;nbsp;表示英文空格。如果需要图片居中等问题，markdown语言就解决不了了，需要直接使用HTML语言。如果想在网页中直接显示markdown语句，那么就在大括号、中括号两端加&amp;lt;a&amp;gt;标签就好啦！&lt;/p&gt;
 
-&lt;h1&gt;日志分类&lt;/h1&gt;
+&lt;h1&gt;&lt;a name=&quot;tages&quot;&gt;日志分类&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;&amp;emsp;&amp;emsp;最后说说日志的分类。虽然我现在写的是博客的第一篇日志，但是想到我感兴趣的东西那么多，而且还在与日俱增，可以预见到未来整个博客一定是杂乱无章的。因此需要未雨绸缪，提前建设好日志分类的系统。&lt;/p&gt;
 
