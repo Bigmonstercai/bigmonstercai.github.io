@@ -65,6 +65,7 @@ h4 {
 }
 
 p {
+  text-indent: 2em;
   margin: 15px 0;
 }
 
@@ -119,6 +120,7 @@ code {
 
 blockquote {
     display: block;
+    line-break: normal;
     background: $lightGray;
     font-family : Courier;
     font-style: normal;

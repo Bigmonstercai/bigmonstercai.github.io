@@ -1,14 +1,268 @@
 ---
 layout: post
 title: 利用Python从音乐文件中提取专辑封面
-tags : [Python, ID3, Music Album with music albums]
+tags : [Python, Audio, Music Album with music albums]
 excerpt : 本文探讨利用Python从MP3、M4A等音乐文件中提取出专辑封面图片的方法
 ---
 
-&emsp;&emsp;使用iTunes管理音乐文件时，我给每张专辑都设置了专辑封面。iTunes把专辑封面图片嵌入到了每一个音频文件中，当我们在资源管理器中以缩略图的形式查看这些文件时，就可以看到每个音频文件显示的都是专辑封面。
+使用iTunes管理音乐文件时，我给每张专辑都设置了专辑封面。iTunes把专辑封面图片嵌入到了每一个音频文件中，当我们在资源管理器中以缩略图的形式查看这些文件时，就可以看到每个音频文件显示的都是专辑封面。
 
 ![1]({{site.baseurl}}/images/{{ page.url }}/1.png)
 
-&emsp;&emsp;在我突发奇想制作[“来自封面们的封面”](https://github.com/Bigmonstercai/Music-Album-with-music-albums/)这个音乐播放可视化效果时，我需要从这些音频文件中提取出专辑封面，本文将具体探讨利用Python提取专辑封面的方法。
+在我突发奇想制作[“来自封面们的封面”](https://github.com/Bigmonstercai/Music-Album-with-music-albums/)这个可视化效果时，需要从这些音频文件中提取出专辑封面，本文将具体探讨利用Python提取专辑封面的方法。
 
-#<a name="MP3">
+#<a name="Audio">音乐格式浅析</a>
+
+我的音乐文件主要有MP3文件和M4A文件两种，因此下面我将简要介绍下这两种音频格式，重点为专辑封面是如何嵌入在这两种格式的文件中的。
+
+##<a name="MP3">MP3</a>
+
+MP3文件使用ID3记录歌曲信息。ID3有两个版本，ID3v1在MP3文件的末尾128字节，以TAG开头，记录标题、作者、专辑、出品年代、类型、音轨序号等信息；ID3v2在MP3文件的头部，以ID3开头，由许多“帧”构成，每一帧记录一种属性，可以方便的扩展。下表是ID3v2的结构：
+
+![2]({{site.baseurl}}/images/{{ page.url }}/2.png)
+
+以下是ID3v2各帧的定义：
+<blockquote>
+
+AENC	Audio encryption
+
+APIC	Attached picture
+
+COMM	Comments
+
+COMR	Commercial frame
+
+ENCR	Encryption method registration
+
+EQUA	Equalization
+
+ETCO	Event timing codes
+
+GEOB	General encapsulated object
+
+GRID	Group identification registration
+
+IPLS	Involved people list
+
+LINK	Linked information
+
+MCDI	Music CD identifier
+
+MLLT	MPEG location lookup table
+
+OWNE	Ownership frame
+
+PRIV	Private frame
+
+PCNT	Play counter
+
+POPM	Popularimeter
+
+POSS	Position synchronisation frame
+
+RBUF	Recommended buffer size
+
+RVAD	Relative volume adjustment
+
+RVRB	Reverb
+
+SYLT	Synchronized lyric/text
+
+SYTC	Synchronized tempo codes
+
+TALB	Album/Movie/Show title
+
+TBPM	BPM (beats per minute)
+
+TCOM	Composer
+
+TCON	Content type
+
+TCOP	Copyright message
+
+TDAT	Date
+
+TDLY	Playlist delay
+
+TENC	Encoded by
+
+TEXT	Lyricist/Text writer
+
+TFLT	File type
+
+TIME	Time
+
+TIT1	Content group description
+
+TIT2	Title/songname/content description
+
+TIT3	Subtitle/Description refinement
+
+TKEY	Initial key
+
+TLAN	Language(s)
+
+TLEN	Length
+
+TMED	Media type
+
+TOAL	Original album/movie/show title
+
+TOFN	Original filename
+
+TOLY	Original lyricist(s)/text writer(s)
+
+TOPE	Original artist(s)/performer(s)
+
+TORY	Original release year
+
+TOWN	File owner/licensee
+
+TPE1	Lead performer(s)/Soloist(s)
+
+TPE2	Band/orchestra/accompaniment
+
+TPE3	Conductor/performer refinement
+
+TPE4	Interpreted, remixed, or otherwise modified by
+
+TPOS	Part of a set
+
+TPUB	Publisher
+
+TRCK	Track number/Position in set
+
+TRDA	Recording dates
+
+TRSN	Internet radio station name
+
+TRSO	Internet radio station owner
+
+TSIZ	Size
+
+TSRC	ISRC (international standard recording code)
+
+TSSE	Software/Hardware and settings used for encoding
+
+TYER	Year
+
+TXXX	User defined text information frame
+
+UFID	Unique file identifier
+
+USER	Terms of use
+
+USLT	Unsychronized lyric/text transcription
+
+WCOM	Commercial information
+
+WCOP	Copyright/Legal information
+
+WOAF	Official audio file webpage
+
+WOAR	Official artist/performer webpage
+
+WOAS	Official audio source webpage
+
+WORS	Official internet radio station homepage
+
+WPAY	Payment
+
+WPUB	Publishers official webpage
+
+WXXX	User defined URL link frame
+</blockquote>
+对于专辑封面，我们需要读取的是APIC。
+
+##<a name="M4A">M4A</a>
+
+M4A文件也使用了一种类似于ID3的方式按帧存储音频文件的信息，称作ATOM。关于M4A格式的详细说明文档可以到[这里](http://download.csdn.net/detail/bigmonstercai/9131325)下载查看，我就不再赘述了。
+
+在M4A格式的文件中，专辑封面的标志字为covr。
+
+#<a name="Image">图片格式浅析</a>
+
+内嵌在音频文件中的图片通常为JPG或PNG格式的，为了将它们提取出来，我们需要对这两种图片的格式也有所了解。
+
+##<a name="JPG">JPG</a>
+
+JPG文件采用[JPEG File Interchange Format(JFIF)](https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format)标准，由一系列标记或标记块组成。每个标记有两字节，第一个字节固定为<code>FF</code>，第二个字节表示标记的类型，不为<code>00</code>或<code>FF</code>。JPG文件的开始标记和结束标记分别为<code>FF D8</code>和<code>FF D9</code>。整个文件的结构见下表：
+
+![3]({{site.baseurl}}/images/{{ page.url }}/3.png)
+
+对于提取专辑封面，我们只需要知道开始标记和结束标记即可，其他标记的说明可点击本节开头的链接参考维基百科。
+
+##<a name="PNG">PNG</a>
+
+[PNG(Portable Network Graphics)](https://en.wikipedia.org/wiki/Portable_Network_Graphics)文件也由若干数据块组成。
+
+![4]({{site.baseurl}}/images/{{ page.url }}/4.png)
+
+除文件头外，其他数据块格式如下：
+
+![5]({{site.baseurl}}/images/{{ page.url }}/5.png)
+
+其文件头为<code>89 50 4E 47 0D 0A 1A 0A</code>，图像结束数据块在没有人为加入数据的情况下通常为<code>00 00 00 00 49 45 4E 44 AE 42 60 82</code>。
+
+如需了解PNG格式的其他详细信息，可以查看它的[官方说明文档](http://www.w3.org/TR/PNG/)。
+
+#<a name="Python">利用Python提取专辑封面</a>
+
+了解了上述信息，就可以开始利用Python编写程序提取音频文件中的专辑封面了。
+
+为了对比字节，找到图片，我们需要使用二进制格式读取(rb)音频文件。
+
+我最初的想法是利用正则表达式匹配图片的文件头及文件尾来找到对应的图片，但是在操作中对于较长的字符串利用正则表达式 <code>b'covr.+?(\xFF\xD8.+?\xFF\xD9)'</code>无法匹配成功，而使用表达式<code>b'covr.+?\xFF\xD8.+?'</code>进行匹配，会发现匹配到的结果\xFF\xD8后面仅有一小部分数据，因此我怀疑Python的正则表达式对字符串的长度有限制。
+
+所以最终我使用了bytes类型的find方法来寻找标志信息在字符串中的位置，通过对整个字符串不断的裁剪，最终获取图片信息。
+
+整个函数的编写我认为用户是知道音频文件的类型的，因此音频文件的格式作为一个输入参数。而音频中内嵌的图片格式我们通常是不知道的，需要程序自行判断。虽然实际中大部分为JPG格式的图片，但是我们默认图片为PNG格式的，因为JPG格式的文件头只有两字节，在音频文件的非图片位置出现的可能性非常高，容易发生误判（即如果文件是PNG格式的，也很有可能在APIC或covr后方找到JPG文件的文件头标志），而PNG格式的文件头有八个字节，发生误判的概率微乎其微。
+
+在实际操作中我还发现，MP3文件中即使APIC帧头没有出现，也是可以正常保存专辑图片的，因此我实际匹配的不是APIC而是ID3。因为一旦ID3没有出现，就说明该文件不存在ID3v2信息。
+
+最后，部分由Photoshop生成的JPG图片，在实际的开始标记前添加了一个伪开始标记，用来增加它自己的一些信息，导致图片不能被其他图片浏览器正常打开。因为图片中除了开始部分，不会再出现<code>FF D8</code>，因此需要检查一下，裁剪掉冗余信息。
+
+以下就是提取专辑图片函数的完整代码：
+<link rel="stylesheet" href="{{ site.baseurl }}\_sass\_highlights.scss">
+<blockquote>
+{% highlight python %}
+def readAPIC(filename, artist, album, filetype):<br>
+    fp = open(filename, 'rb')<br>
+    if filetype == '.m4a':<br>
+        covr = b'covr'<br>
+    elif filetype == '.mp3':<br>
+        covr = b'ID3'<br>
+    else:<br>
+        return False<br>
+    imagetype = '.png'<br>
+    start = b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A'  # 默认为png,因为png的文件头长，误匹配到的概率低<br>
+    end = b'\x00\x00\x00\x00\x49\x45\x4E\x44\xAE\x42\x60\x82'<br>
+    a = fp.read()<br>
+    covr_num = a.find(covr)<br>
+    a = a[covr_num: -1]<br>
+    start_num = a.find(start)<br>
+    end_num = a.find(end)<br>
+    if start_num == -1:  # 不为png则为jpg<br>
+        start = b'\xFF\xD8'<br>
+        end = b'\xFF\xD9'<br>
+        start_num = a.find(start)<br>
+        end_num = a.find(end)<br>
+        imagetype = '.jpg'<br>
+
+    if imagetype == '.jpg':<br>
+        pic = a[start_num: end_num + 2]<br>
+        while pic[2: -1].find(start) != -1:<br>
+            pic = pic[pic[2: -1].find(start) + 2:-1]<br>
+    elif imagetype == '.png':<br>
+        pic = a[start_num: end_num + 12]<br>
+        while pic[8: -1].find(start) != -1:<br>
+            pic = pic[pic[8: -1].find(start) + 8:-1]<br>
+
+    fo = open('images/' + artist + '-' + album + imagetype, 'wb')<br>
+    fo.write(pic)<br>
+
+    fp.close()<br>
+    fo.close()<br>
+    return True<br>	
+{% endhighlight %}    	
+</blockquote>
