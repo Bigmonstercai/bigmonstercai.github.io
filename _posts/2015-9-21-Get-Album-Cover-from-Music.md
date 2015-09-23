@@ -224,7 +224,6 @@ JPG文件采用[JPEG File Interchange Format(JFIF)](https://en.wikipedia.org/wik
 
 以下就是提取专辑图片函数的完整代码：
 <link rel="stylesheet" href="{{ site.baseurl }}\_sass\_highlights.scss">
-<blockquote>
 {% highlight python %}
 def readAPIC(filename, artist, album, filetype):
     fp = open(filename, 'rb')
@@ -265,4 +264,3 @@ def readAPIC(filename, artist, album, filetype):
     fo.close()
     return True	
 {% endhighlight %}    	
-</blockquote>
