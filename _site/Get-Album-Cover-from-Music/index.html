@@ -37,7 +37,7 @@
 
           <div class="site-info">
             <h1 class="site-name"><a href="/">Bigmonstercai</a></h1>
-            <p class="site-description">Is Learning</p>
+            <a class="site-description">Is Learning</a>
           </div>
 
           <nav>
@@ -271,49 +271,48 @@
 
 <p>最后，部分由Photoshop生成的JPG图片，在实际的开始标记前添加了一个伪开始标记，用来增加它自己的一些信息，导致图片不能被其他图片浏览器正常打开。因为图片中除了开始部分，不会再出现<code>FF D8</code>，因此需要检查一下，裁剪掉冗余信息。</p>
 
-<p>以下就是提取专辑图片函数的完整代码：</p>
+<p>以下就是提取专辑图片函数的完整代码：
+<link rel="stylesheet" href="\_sass\_highlights.scss"></p>
 
-<blockquote>
-<!-- lang:python-->
-def readAPIC(filename, artist, album, filetype):<br>
-    fp = open(filename, 'rb')<br>
-    if filetype == '.m4a':<br>
-        covr = b'covr'<br>
-    elif filetype == '.mp3':<br>
-        covr = b'ID3'<br>
-    else:<br>
-        return False<br>
-    imagetype = '.png'<br>
-    start = b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A'  # 默认为png,因为png的文件头长，误匹配到的概率低<br>
-    end = b'\x00\x00\x00\x00\x49\x45\x4E\x44\xAE\x42\x60\x82'<br>
-    a = fp.read()<br>
-    covr_num = a.find(covr)<br>
-    a = a[covr_num: -1]<br>
-    start_num = a.find(start)<br>
-    end_num = a.find(end)<br>
-    if start_num == -1:  # 不为png则为jpg<br>
-        start = b'\xFF\xD8'<br>
-        end = b'\xFF\xD9'<br>
-        start_num = a.find(start)<br>
-        end_num = a.find(end)<br>
-        imagetype = '.jpg'<br>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">readAPIC</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">artist</span><span class="p">,</span> <span class="n">album</span><span class="p">,</span> <span class="n">filetype</span><span class="p">):</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">filetype</span> <span class="o">==</span> <span class="s">&#39;.m4a&#39;</span><span class="p">:</span>
+        <span class="n">covr</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;covr&#39;</span>
+    <span class="k">elif</span> <span class="n">filetype</span> <span class="o">==</span> <span class="s">&#39;.mp3&#39;</span><span class="p">:</span>
+        <span class="n">covr</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;ID3&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">imagetype</span> <span class="o">=</span> <span class="s">&#39;.png&#39;</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\x89\x50\x4E\x47\x0D\x0A\x1A\x0A</span><span class="s">&#39;</span>  <span class="c"># 默认为png,因为png的文件头长，误匹配到的概率低</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\x00\x00\x00\x00\x49\x45\x4E\x44\xAE\x42\x60\x82</span><span class="s">&#39;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">covr_num</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">covr</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">covr_num</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">start_num</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">end_num</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">start_num</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="c"># 不为png则为jpg</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\xFF\xD8</span><span class="s">&#39;</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">b</span><span class="s">&#39;</span><span class="se">\xFF\xD9</span><span class="s">&#39;</span>
+        <span class="n">start_num</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="n">end_num</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+        <span class="n">imagetype</span> <span class="o">=</span> <span class="s">&#39;.jpg&#39;</span>
 
-    if imagetype == '.jpg':<br>
-        pic = a[start_num: end_num + 2]<br>
-        while pic[2: -1].find(start) != -1:<br>
-            pic = pic[pic[2: -1].find(start) + 2:-1]<br>
-    elif imagetype == '.png':<br>
-        pic = a[start_num: end_num + 12]<br>
-        while pic[8: -1].find(start) != -1:<br>
-            pic = pic[pic[8: -1].find(start) + 8:-1]<br>
+    <span class="k">if</span> <span class="n">imagetype</span> <span class="o">==</span> <span class="s">&#39;.jpg&#39;</span><span class="p">:</span>
+        <span class="n">pic</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">start_num</span><span class="p">:</span> <span class="n">end_num</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">pic</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">pic</span> <span class="o">=</span> <span class="n">pic</span><span class="p">[</span><span class="n">pic</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">imagetype</span> <span class="o">==</span> <span class="s">&#39;.png&#39;</span><span class="p">:</span>
+        <span class="n">pic</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">start_num</span><span class="p">:</span> <span class="n">end_num</span> <span class="o">+</span> <span class="mi">12</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">pic</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">pic</span> <span class="o">=</span> <span class="n">pic</span><span class="p">[</span><span class="n">pic</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-    fo = open('images/' + artist + '-' + album + imagetype, 'wb')<br>
-    fo.write(pic)<br>
+    <span class="n">fo</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;images/&#39;</span> <span class="o">+</span> <span class="n">artist</span> <span class="o">+</span> <span class="s">&#39;-&#39;</span> <span class="o">+</span> <span class="n">album</span> <span class="o">+</span> <span class="n">imagetype</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span>
+    <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pic</span><span class="p">)</span>
 
-    fp.close()<br>
-    fo.close()<br>
-    return True<br>     
-</blockquote>
+    <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">fo</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">True</span>  </code></pre></figure>
+        
 
   </div>
 
