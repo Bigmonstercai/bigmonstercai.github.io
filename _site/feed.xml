@@ -18,21 +18,23 @@
 &lt;p&gt;具体步骤如下：&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;打开应用程序下的automator&lt;/li&gt;
-&lt;li&gt;新建文稿，选择“服务”&lt;/li&gt;
-&lt;li&gt;在左侧的资源库选择“实用工具”，双击“运行AppleScript”&lt;/li&gt;
-&lt;li&gt;““服务”收到”一项选择“没有输入”&lt;/li&gt;
-&lt;li&gt;将以下代码复制到代码框中&lt;/li&gt;
-&lt;li&gt;保存服务&lt;/li&gt;
-&lt;li&gt;在系统偏好设置中选择“键盘”&lt;/li&gt;
-&lt;li&gt;选择“快捷键”标签，在左侧选择服务&lt;/li&gt;
-&lt;li&gt;在右侧通用下面找到刚刚新建的服务，指定一个快捷键，以后就可以在任何时候一键截图啦&lt;/li&gt;
+  &lt;li&gt;打开应用程序下的automator&lt;/li&gt;
+  &lt;li&gt;新建文稿，选择“服务”&lt;/li&gt;
+  &lt;li&gt;在左侧的资源库选择“实用工具”，双击“运行AppleScript”&lt;/li&gt;
+  &lt;li&gt;““服务”收到”一项选择“没有输入”&lt;/li&gt;
+  &lt;li&gt;将以下代码复制到代码框中&lt;/li&gt;
+  &lt;li&gt;保存服务&lt;/li&gt;
+  &lt;li&gt;在系统偏好设置中选择“键盘”&lt;/li&gt;
+  &lt;li&gt;选择“快捷键”标签，在左侧选择服务&lt;/li&gt;
+  &lt;li&gt;在右侧通用下面找到刚刚新建的服务，指定一个快捷键，以后就可以在任何时候一键截图啦&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-AppleScript&quot; data-lang=&quot;AppleScript&quot;&gt;&lt;span class=&quot;k&quot;&gt;tell&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;application&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Grab&amp;quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;activate&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;tell&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;application&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;System Events&amp;quot;&lt;/span&gt;
-        &lt;span class=&quot;nv&quot;&gt;keystroke&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;a&amp;quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;down&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;shift&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;down&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;tell&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-AppleScript&quot;&gt;tell application &quot;Grab&quot; to activate
+    tell application &quot;System Events&quot;
+	    keystroke &quot;a&quot; using {command down, shift down}
+end tell
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;换了MacBook Pro快一个月了，发现使用触摸板手势以及PopClip、Alfred等软件可以大大的提高效率。今天又发现使用AppleScript基本上可以随意定制自己想要完成的任务，而Alfred也支持AppleScript脚本，日后在使用过程中可以根据自己的习惯编写各种各样的脚本辅助自己的工作，想想就有点儿小激动呢！&lt;/p&gt;
 </description>
         <pubDate>Wed, 02 Mar 2016 00:00:00 +0800</pubDate>
@@ -44,212 +46,212 @@
         <title>利用Python从音乐文件中提取专辑封面</title>
         <description>&lt;p&gt;使用iTunes管理音乐文件时，我给每张专辑都设置了专辑封面。iTunes把专辑封面图片嵌入到了每一个音频文件中，当我们在资源管理器中以缩略图的形式查看这些文件时，就可以看到每个音频文件显示的都是专辑封面。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//1.png&quot; alt=&quot;1&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//1.png&quot; alt=&quot;1&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;在我突发奇想制作&lt;a href=&quot;https://github.com/Bigmonstercai/Music-Album-with-music-albums/&quot;&gt;“来自封面们的封面”&lt;/a&gt;这个可视化效果时，需要从这些音频文件中提取出专辑封面，本文将具体探讨利用Python提取专辑封面的方法。&lt;/p&gt;
 
-&lt;h1&gt;&lt;a name=&quot;Audio&quot;&gt;音乐格式浅析&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;#&lt;a name=&quot;Audio&quot;&gt;音乐格式浅析&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;我的音乐文件主要有MP3文件和M4A文件两种，因此下面我将简要介绍下这两种音频格式，重点为专辑封面是如何嵌入在这两种格式的文件中的。&lt;/p&gt;
 
-&lt;h2&gt;&lt;a name=&quot;MP3&quot;&gt;MP3&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;##&lt;a name=&quot;MP3&quot;&gt;MP3&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;MP3文件使用ID3记录歌曲信息。ID3有两个版本，ID3v1在MP3文件的末尾128字节，以TAG开头，记录标题、作者、专辑、出品年代、类型、音轨序号等信息；ID3v2在MP3文件的头部，以ID3开头，由许多“帧”构成，每一帧记录一种属性，可以方便的扩展。下表是ID3v2的结构：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//2.png&quot; alt=&quot;2&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//2.png&quot; alt=&quot;2&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;以下是ID3v2各帧的定义：
-&lt;blockquote&gt;&lt;/p&gt;
+&lt;p&gt;以下是ID3v2各帧的定义：&lt;/p&gt;
+&lt;blockquote&gt;
 
-&lt;p&gt;AENC    Audio encryption&lt;/p&gt;
+AENC	Audio encryption
 
-&lt;p&gt;APIC    Attached picture&lt;/p&gt;
+APIC	Attached picture
 
-&lt;p&gt;COMM    Comments&lt;/p&gt;
+COMM	Comments
 
-&lt;p&gt;COMR    Commercial frame&lt;/p&gt;
+COMR	Commercial frame
 
-&lt;p&gt;ENCR    Encryption method registration&lt;/p&gt;
+ENCR	Encryption method registration
 
-&lt;p&gt;EQUA    Equalization&lt;/p&gt;
+EQUA	Equalization
 
-&lt;p&gt;ETCO    Event timing codes&lt;/p&gt;
+ETCO	Event timing codes
 
-&lt;p&gt;GEOB    General encapsulated object&lt;/p&gt;
+GEOB	General encapsulated object
 
-&lt;p&gt;GRID    Group identification registration&lt;/p&gt;
+GRID	Group identification registration
 
-&lt;p&gt;IPLS    Involved people list&lt;/p&gt;
+IPLS	Involved people list
 
-&lt;p&gt;LINK    Linked information&lt;/p&gt;
+LINK	Linked information
 
-&lt;p&gt;MCDI    Music CD identifier&lt;/p&gt;
+MCDI	Music CD identifier
 
-&lt;p&gt;MLLT    MPEG location lookup table&lt;/p&gt;
+MLLT	MPEG location lookup table
 
-&lt;p&gt;OWNE    Ownership frame&lt;/p&gt;
+OWNE	Ownership frame
 
-&lt;p&gt;PRIV    Private frame&lt;/p&gt;
+PRIV	Private frame
 
-&lt;p&gt;PCNT    Play counter&lt;/p&gt;
+PCNT	Play counter
 
-&lt;p&gt;POPM    Popularimeter&lt;/p&gt;
+POPM	Popularimeter
 
-&lt;p&gt;POSS    Position synchronisation frame&lt;/p&gt;
+POSS	Position synchronisation frame
 
-&lt;p&gt;RBUF    Recommended buffer size&lt;/p&gt;
+RBUF	Recommended buffer size
 
-&lt;p&gt;RVAD    Relative volume adjustment&lt;/p&gt;
+RVAD	Relative volume adjustment
 
-&lt;p&gt;RVRB    Reverb&lt;/p&gt;
+RVRB	Reverb
 
-&lt;p&gt;SYLT    Synchronized lyric/text&lt;/p&gt;
+SYLT	Synchronized lyric/text
 
-&lt;p&gt;SYTC    Synchronized tempo codes&lt;/p&gt;
+SYTC	Synchronized tempo codes
 
-&lt;p&gt;TALB    Album/Movie/Show title&lt;/p&gt;
+TALB	Album/Movie/Show title
 
-&lt;p&gt;TBPM    BPM (beats per minute)&lt;/p&gt;
+TBPM	BPM (beats per minute)
 
-&lt;p&gt;TCOM    Composer&lt;/p&gt;
+TCOM	Composer
 
-&lt;p&gt;TCON    Content type&lt;/p&gt;
+TCON	Content type
 
-&lt;p&gt;TCOP    Copyright message&lt;/p&gt;
+TCOP	Copyright message
 
-&lt;p&gt;TDAT    Date&lt;/p&gt;
+TDAT	Date
 
-&lt;p&gt;TDLY    Playlist delay&lt;/p&gt;
+TDLY	Playlist delay
 
-&lt;p&gt;TENC    Encoded by&lt;/p&gt;
+TENC	Encoded by
 
-&lt;p&gt;TEXT    Lyricist/Text writer&lt;/p&gt;
+TEXT	Lyricist/Text writer
 
-&lt;p&gt;TFLT    File type&lt;/p&gt;
+TFLT	File type
 
-&lt;p&gt;TIME    Time&lt;/p&gt;
+TIME	Time
 
-&lt;p&gt;TIT1    Content group description&lt;/p&gt;
+TIT1	Content group description
 
-&lt;p&gt;TIT2    Title/songname/content description&lt;/p&gt;
+TIT2	Title/songname/content description
 
-&lt;p&gt;TIT3    Subtitle/Description refinement&lt;/p&gt;
+TIT3	Subtitle/Description refinement
 
-&lt;p&gt;TKEY    Initial key&lt;/p&gt;
+TKEY	Initial key
 
-&lt;p&gt;TLAN    Language(s)&lt;/p&gt;
+TLAN	Language(s)
 
-&lt;p&gt;TLEN    Length&lt;/p&gt;
+TLEN	Length
 
-&lt;p&gt;TMED    Media type&lt;/p&gt;
+TMED	Media type
 
-&lt;p&gt;TOAL    Original album/movie/show title&lt;/p&gt;
+TOAL	Original album/movie/show title
 
-&lt;p&gt;TOFN    Original filename&lt;/p&gt;
+TOFN	Original filename
 
-&lt;p&gt;TOLY    Original lyricist(s)/text writer(s)&lt;/p&gt;
+TOLY	Original lyricist(s)/text writer(s)
 
-&lt;p&gt;TOPE    Original artist(s)/performer(s)&lt;/p&gt;
+TOPE	Original artist(s)/performer(s)
 
-&lt;p&gt;TORY    Original release year&lt;/p&gt;
+TORY	Original release year
 
-&lt;p&gt;TOWN    File owner/licensee&lt;/p&gt;
+TOWN	File owner/licensee
 
-&lt;p&gt;TPE1    Lead performer(s)/Soloist(s)&lt;/p&gt;
+TPE1	Lead performer(s)/Soloist(s)
 
-&lt;p&gt;TPE2    Band/orchestra/accompaniment&lt;/p&gt;
+TPE2	Band/orchestra/accompaniment
 
-&lt;p&gt;TPE3    Conductor/performer refinement&lt;/p&gt;
+TPE3	Conductor/performer refinement
 
-&lt;p&gt;TPE4    Interpreted, remixed, or otherwise modified by&lt;/p&gt;
+TPE4	Interpreted, remixed, or otherwise modified by
 
-&lt;p&gt;TPOS    Part of a set&lt;/p&gt;
+TPOS	Part of a set
 
-&lt;p&gt;TPUB    Publisher&lt;/p&gt;
+TPUB	Publisher
 
-&lt;p&gt;TRCK    Track number/Position in set&lt;/p&gt;
+TRCK	Track number/Position in set
 
-&lt;p&gt;TRDA    Recording dates&lt;/p&gt;
+TRDA	Recording dates
 
-&lt;p&gt;TRSN    Internet radio station name&lt;/p&gt;
+TRSN	Internet radio station name
 
-&lt;p&gt;TRSO    Internet radio station owner&lt;/p&gt;
+TRSO	Internet radio station owner
 
-&lt;p&gt;TSIZ    Size&lt;/p&gt;
+TSIZ	Size
 
-&lt;p&gt;TSRC    ISRC (international standard recording code)&lt;/p&gt;
+TSRC	ISRC (international standard recording code)
 
-&lt;p&gt;TSSE    Software/Hardware and settings used for encoding&lt;/p&gt;
+TSSE	Software/Hardware and settings used for encoding
 
-&lt;p&gt;TYER    Year&lt;/p&gt;
+TYER	Year
 
-&lt;p&gt;TXXX    User defined text information frame&lt;/p&gt;
+TXXX	User defined text information frame
 
-&lt;p&gt;UFID    Unique file identifier&lt;/p&gt;
+UFID	Unique file identifier
 
-&lt;p&gt;USER    Terms of use&lt;/p&gt;
+USER	Terms of use
 
-&lt;p&gt;USLT    Unsychronized lyric/text transcription&lt;/p&gt;
+USLT	Unsychronized lyric/text transcription
 
-&lt;p&gt;WCOM    Commercial information&lt;/p&gt;
+WCOM	Commercial information
 
-&lt;p&gt;WCOP    Copyright/Legal information&lt;/p&gt;
+WCOP	Copyright/Legal information
 
-&lt;p&gt;WOAF    Official audio file webpage&lt;/p&gt;
+WOAF	Official audio file webpage
 
-&lt;p&gt;WOAR    Official artist/performer webpage&lt;/p&gt;
+WOAR	Official artist/performer webpage
 
-&lt;p&gt;WOAS    Official audio source webpage&lt;/p&gt;
+WOAS	Official audio source webpage
 
-&lt;p&gt;WORS    Official internet radio station homepage&lt;/p&gt;
+WORS	Official internet radio station homepage
 
-&lt;p&gt;WPAY    Payment&lt;/p&gt;
+WPAY	Payment
 
-&lt;p&gt;WPUB    Publishers official webpage&lt;/p&gt;
+WPUB	Publishers official webpage
 
-&lt;p&gt;WXXX    User defined URL link frame
+WXXX	User defined URL link frame
 &lt;/blockquote&gt;
-对于专辑封面，我们需要读取的是APIC。&lt;/p&gt;
+&lt;p&gt;对于专辑封面，我们需要读取的是APIC。&lt;/p&gt;
 
-&lt;h2&gt;&lt;a name=&quot;M4A&quot;&gt;M4A&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;##&lt;a name=&quot;M4A&quot;&gt;M4A&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;M4A文件也使用了一种类似于ID3的方式按帧存储音频文件的信息，称作ATOM。关于M4A格式的详细说明文档可以到&lt;a href=&quot;http://download.csdn.net/detail/bigmonstercai/9131325&quot;&gt;这里&lt;/a&gt;下载查看，我就不再赘述了。&lt;/p&gt;
 
 &lt;p&gt;在M4A格式的文件中，专辑封面的标志字为covr。&lt;/p&gt;
 
-&lt;h1&gt;&lt;a name=&quot;Image&quot;&gt;图片格式浅析&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;#&lt;a name=&quot;Image&quot;&gt;图片格式浅析&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;内嵌在音频文件中的图片通常为JPG或PNG格式的，为了将它们提取出来，我们需要对这两种图片的格式也有所了解。&lt;/p&gt;
 
-&lt;h2&gt;&lt;a name=&quot;JPG&quot;&gt;JPG&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;##&lt;a name=&quot;JPG&quot;&gt;JPG&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;JPG文件采用&lt;a href=&quot;https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format&quot;&gt;JPEG File Interchange Format(JFIF)&lt;/a&gt;标准，由一系列标记或标记块组成。每个标记有两字节，第一个字节固定为&lt;code&gt;FF&lt;/code&gt;，第二个字节表示标记的类型，不为&lt;code&gt;00&lt;/code&gt;或&lt;code&gt;FF&lt;/code&gt;。JPG文件的开始标记和结束标记分别为&lt;code&gt;FF D8&lt;/code&gt;和&lt;code&gt;FF D9&lt;/code&gt;。整个文件的结构见下表：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//3.png&quot; alt=&quot;3&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//3.png&quot; alt=&quot;3&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;对于提取专辑封面，我们只需要知道开始标记和结束标记即可，其他标记的说明可点击本节开头的链接参考维基百科。&lt;/p&gt;
 
-&lt;h2&gt;&lt;a name=&quot;PNG&quot;&gt;PNG&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;##&lt;a name=&quot;PNG&quot;&gt;PNG&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Portable_Network_Graphics&quot;&gt;PNG(Portable Network Graphics)&lt;/a&gt;文件也由若干数据块组成。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//4.png&quot; alt=&quot;4&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//4.png&quot; alt=&quot;4&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;除文件头外，其他数据块格式如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//5.png&quot; alt=&quot;5&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images//Get-Album-Cover-from-Music//5.png&quot; alt=&quot;5&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;其文件头为&lt;code&gt;89 50 4E 47 0D 0A 1A 0A&lt;/code&gt;，图像结束数据块在没有人为加入数据的情况下通常为&lt;code&gt;00 00 00 00 49 45 4E 44 AE 42 60 82&lt;/code&gt;。&lt;/p&gt;
 
 &lt;p&gt;如需了解PNG格式的其他详细信息，可以查看它的&lt;a href=&quot;http://www.w3.org/TR/PNG/&quot;&gt;官方说明文档&lt;/a&gt;。&lt;/p&gt;
 
-&lt;h1&gt;&lt;a name=&quot;Python&quot;&gt;利用Python提取专辑封面&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;#&lt;a name=&quot;Python&quot;&gt;利用Python提取专辑封面&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;了解了上述信息，就可以开始利用Python编写程序提取音频文件中的专辑封面了。&lt;/p&gt;
 
 &lt;p&gt;为了对比字节，找到图片，我们需要使用二进制格式读取(rb)音频文件。&lt;/p&gt;
 
-&lt;p&gt;我最初的想法是利用正则表达式匹配图片的文件头及文件尾来找到对应的图片，但是在操作中对于较长的字符串利用正则表达式 &lt;code&gt;b&amp;#39;covr.+?(\xFF\xD8.+?\xFF\xD9)&amp;#39;&lt;/code&gt;无法匹配成功，而使用表达式&lt;code&gt;b&amp;#39;covr.+?\xFF\xD8.+?&amp;#39;&lt;/code&gt;进行匹配，会发现匹配到的结果\xFF\xD8后面仅有一小部分数据，因此我怀疑Python的正则表达式对字符串的长度有限制。&lt;/p&gt;
+&lt;p&gt;我最初的想法是利用正则表达式匹配图片的文件头及文件尾来找到对应的图片，但是在操作中对于较长的字符串利用正则表达式 &lt;code&gt;b&#39;covr.+?(\xFF\xD8.+?\xFF\xD9)&#39;&lt;/code&gt;无法匹配成功，而使用表达式&lt;code&gt;b&#39;covr.+?\xFF\xD8.+?&#39;&lt;/code&gt;进行匹配，会发现匹配到的结果\xFF\xD8后面仅有一小部分数据，因此我怀疑Python的正则表达式对字符串的长度有限制。&lt;/p&gt;
 
 &lt;p&gt;所以最终我使用了bytes类型的find方法来寻找标志信息在字符串中的位置，通过对整个字符串不断的裁剪，最终获取图片信息。&lt;/p&gt;
 
@@ -259,8 +261,8 @@
 
 &lt;p&gt;最后，部分由Photoshop生成的JPG图片，在实际的开始标记前添加了一个伪开始标记，用来增加它自己的一些信息，导致图片不能被其他图片浏览器正常打开。因为图片中除了开始部分，不会再出现&lt;code&gt;FF D8&lt;/code&gt;，因此需要检查一下，裁剪掉冗余信息。&lt;/p&gt;
 
-&lt;p&gt;以下就是提取专辑图片函数的完整代码：
-&lt;link rel=&quot;stylesheet&quot; href=&quot;\_sass\_highlights.scss&quot;&gt;&lt;/p&gt;
+&lt;p&gt;以下就是提取专辑图片函数的完整代码：&lt;/p&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;\_sass\_highlights.scss&quot; /&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;readAPIC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;artist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;fp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;rb&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -299,8 +301,8 @@
 
     &lt;span class=&quot;n&quot;&gt;fp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;fo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;  &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-        
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;	&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
 </description>
         <pubDate>Mon, 21 Sep 2015 00:00:00 +0800</pubDate>
         <link>http://bigmonstercai.github.io/Get-Album-Cover-from-Music/</link>
@@ -310,14 +312,14 @@
       <item>
         <title>第一篇文章就记录下这个博客搭建的过程吧！</title>
         <description>&lt;blockquote&gt;
-    &lt;p&gt;&lt;a href=&quot;#Github&quot;&gt; - 在Github上新建项目库&lt;/a&gt;&lt;/p&gt;
-    &lt;p&gt;&lt;a href=&quot;#auto&quot;&gt; - 自动生成（可选）&lt;/a&gt;&lt;/p&gt;
-    &lt;p&gt;&lt;a href=&quot;#manual&quot;&gt; - 手工搭建&lt;/a&gt;&lt;/p&gt;
-    &lt;p&gt;&lt;a href=&quot;#Jekyll&quot;&gt; &amp;emsp;- 安装Jekyll&lt;/a&gt;&lt;/p&gt;
-    &lt;p&gt;&lt;a href=&quot;#self&quot;&gt; &amp;emsp;- 自建站点（可选）&lt;/a&gt;&lt;/p&gt;
-    &lt;p&gt;&lt;a href=&quot;#module&quot;&gt; &amp;emsp;- 使用现有模板&lt;/a&gt;&lt;/p&gt;
-    &lt;p&gt;&lt;a href=&quot;#markdown&quot;&gt; - markdown语言&lt;/a&gt;&lt;/p&gt;
-    &lt;p&gt;&lt;a href=&quot;#tages&quot;&gt; - 日志分类&lt;/a&gt;&lt;/p&gt;
+	&lt;p&gt;&lt;a href=&quot;#Github&quot;&gt; - 在Github上新建项目库&lt;/a&gt;&lt;/p&gt;
+	&lt;p&gt;&lt;a href=&quot;#auto&quot;&gt; - 自动生成（可选）&lt;/a&gt;&lt;/p&gt;
+	&lt;p&gt;&lt;a href=&quot;#manual&quot;&gt; - 手工搭建&lt;/a&gt;&lt;/p&gt;
+	&lt;p&gt;&lt;a href=&quot;#Jekyll&quot;&gt; &amp;emsp;- 安装Jekyll&lt;/a&gt;&lt;/p&gt;
+	&lt;p&gt;&lt;a href=&quot;#self&quot;&gt; &amp;emsp;- 自建站点（可选）&lt;/a&gt;&lt;/p&gt;
+	&lt;p&gt;&lt;a href=&quot;#module&quot;&gt; &amp;emsp;- 使用现有模板&lt;/a&gt;&lt;/p&gt;
+	&lt;p&gt;&lt;a href=&quot;#markdown&quot;&gt; - markdown语言&lt;/a&gt;&lt;/p&gt;
+	&lt;p&gt;&lt;a href=&quot;#tages&quot;&gt; - 日志分类&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;年纪大了，脑子越来越不好使了，小时候学点儿啥分分钟就搞定，现在天天都在研究配置环境。这不，想搭建个博客，又折腾了三天……&lt;/p&gt;
@@ -336,74 +338,74 @@
 
 &lt;p&gt;下面，我就记录下我这个博客搭建的过程，给其他想在Github Pages上搭建博客的同学一些参考，也方便未来我想把这个博客推倒重盖时，不用再花那么多时间……&lt;/p&gt;
 
-&lt;h1&gt;&lt;a name=&quot;Github&quot;&gt;在Github上新建项目库&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;#&lt;a name=&quot;Github&quot;&gt;在Github上新建项目库&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;既然选择了Github Pages，那肯定已经注册过Github账号了吧？（废话！不注册怎么交友）&lt;/p&gt;
 
 &lt;p&gt;Github Pages分为用户和组织站点及项目站点两种，用户和组织站点就是可以直接使用username.github.io访问的主页，项目站点则是通过username.github.io/repository来访问的。作为个人博客，肯定是第一种逼格更高，.io后面还有一大坨单词多难看！所以博客搭建选用用户和组织站点。&lt;/p&gt;
 
-&lt;p&gt;然后可以跟着&lt;a href=&quot;https://pages.github.com/&quot;&gt;官方的教程&lt;/a&gt;先建立一个名为&amp;quot;username.github.io&amp;quot;的项目库（username为Github账号），并利用Git同步到本地。&lt;/p&gt;
+&lt;p&gt;然后可以跟着&lt;a href=&quot;https://pages.github.com/&quot;&gt;官方的教程&lt;/a&gt;先建立一个名为”username.github.io”的项目库（username为Github账号），并利用Git同步到本地。&lt;/p&gt;
 
-&lt;h1&gt;&lt;a name=&quot;auto&quot;&gt;自动生成（可选）&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;#&lt;a name=&quot;auto&quot;&gt;自动生成（可选）&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;在Github上可以自动生成一个主页，不过这个主页有点儿太简单，都不能显示最新的日志，根本就没用到Jekyll，连用来学习的价值都没有。&lt;/p&gt;
 
-&lt;h4&gt;进入&amp;quot;username.github.io&amp;quot;项目库,点击右侧的“Settings”&lt;/h4&gt;
+&lt;p&gt;####进入”username.github.io”项目库,点击右侧的“Settings”&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//1.png&quot; alt=&quot;1&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//1.png&quot; alt=&quot;1&quot; /&gt;&lt;/p&gt;
 
-&lt;h4&gt;点击“Launch automatic page generator”&lt;/h4&gt;
+&lt;p&gt;####点击“Launch automatic page generator”&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//2.png&quot; alt=&quot;2&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//2.png&quot; alt=&quot;2&quot; /&gt;&lt;/p&gt;
 
-&lt;h4&gt;输入页面标题（Page name）、标语（Tagline）和正文，点击“Continue to layouts”&lt;/h4&gt;
+&lt;p&gt;####输入页面标题（Page name）、标语（Tagline）和正文，点击“Continue to layouts”&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//3.png&quot; alt=&quot;3&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//3.png&quot; alt=&quot;3&quot; /&gt;&lt;/p&gt;
 
-&lt;h4&gt;最后选择一个喜欢的模板，点击“Publish page”就完成啦！&lt;/h4&gt;
+&lt;p&gt;####最后选择一个喜欢的模板，点击“Publish page”就完成啦！&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//4.png&quot; alt=&quot;4&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//4.png&quot; alt=&quot;4&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;自动生成页面虽然操作简单，也还挺漂亮，但是只有这一个页面，如果想增加功能、新建日志恐怕需要有一些HTML和CSS的基础了（反正我没有）。总之如果想建立一个博客，自动生成之后还有很多路要走，不是很推荐使用这个方法。&lt;/p&gt;
 
-&lt;h1&gt;&lt;a name=&quot;manual&quot;&gt;手工搭建&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;#&lt;a name=&quot;manual&quot;&gt;手工搭建&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;说是手工搭建，其实也是可以利用网上现成的模板的，不过在这之前我们最好把Jekyll安装好，方便在本地进行调试。&lt;/p&gt;
 
-&lt;h2&gt;&lt;a name=&quot;Jekyll&quot;&gt;安装Jekyll&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;##&lt;a name=&quot;Jekyll&quot;&gt;安装Jekyll&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;这一步我依然是安装&lt;a href=&quot;https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll&quot;&gt;官方教程&lt;/a&gt;走的。不用理会那个GitHub Pages Gem，直接从安装Ruby开始即可，windows用户可以直接下载&lt;a href=&quot;http://rubyinstaller.org/downloads/&quot;&gt;RubyInstallers&lt;/a&gt;安装。不要着急，在这个页面中往下翻，有个DEVELOPMENT KIT,这个也是需要用到的，下载合适自己使用的版本(32位和64位一定不要弄错)。&lt;/p&gt;
 
-&lt;p&gt;安装RubyInstallers，确保Ruby的bin目录在你的环境变量的path中，然后在命令行中输入 &lt;code&gt;gem update --system&lt;/code&gt; 来升级gem。由于某些众所周知的原因，直接用gem命令连接到rubygems.org下载软件包的过程可能并不流畅，因此可以把源替换为淘宝提供的完整镜像源https://ruby.taobao.org/，执行如下指令：
+&lt;p&gt;安装RubyInstallers，确保Ruby的bin目录在你的环境变量的path中，然后在命令行中输入 &lt;code&gt;gem update --system&lt;/code&gt; 来升级gem。由于某些众所周知的原因，直接用gem命令连接到rubygems.org下载软件包的过程可能并不流畅，因此可以把源替换为淘宝提供的完整镜像源https://ruby.taobao.org/，执行如下指令：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;gem sources --remove https://rubygems.org/&lt;/p&gt;
 &lt;p&gt;gem sources -a https://ruby.taobao.org/&lt;/p&gt;
 &lt;/blockquote&gt;
-执行
+&lt;p&gt;执行
 &lt;code&gt;gem sources -l&lt;/code&gt;
 ，确保只有ruby.taobao.org，以后就可以顺利安装各种软件包了。&lt;/p&gt;
 
-&lt;p&gt;接下来安装DEVELOPMENT KIT，DevKit一定要选择和自己系统相匹配的版本，否则后面安装其他组件时会出现&amp;quot;Failed to build gem native extension&amp;quot;错误。将下载到的DevKit解压，在解压后的目录中打开命令提示行(在一个打开的目录中，按住shift键，同时在空白处点右键，就可以在当前目录中打开命令提示行)，输入如下命令：
+&lt;p&gt;接下来安装DEVELOPMENT KIT，DevKit一定要选择和自己系统相匹配的版本，否则后面安装其他组件时会出现”Failed to build gem native extension”错误。将下载到的DevKit解压，在解压后的目录中打开命令提示行(在一个打开的目录中，按住shift键，同时在空白处点右键，就可以在当前目录中打开命令提示行)，输入如下命令：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;ruby dk.rb init&lt;/p&gt;
 &lt;p&gt;ruby dk.rb install&lt;/p&gt;
 &lt;/blockquote&gt;
-然后就可以开始安装Jekyll了。官方教程中推荐先安装一个Bundler，说是方便各种Ruby软件包的管理和使用，实际上装不装好像都可以。如果需要安装的话，只需要执行&lt;code&gt;gem install bundler&lt;/code&gt;即可。如果安装了Bundler，那么需要在你的项目库中建立一个名为Gemfile的文件，文件内容为：
+&lt;p&gt;然后就可以开始安装Jekyll了。官方教程中推荐先安装一个Bundler，说是方便各种Ruby软件包的管理和使用，实际上装不装好像都可以。如果需要安装的话，只需要执行&lt;code&gt;gem install bundler&lt;/code&gt;即可。如果安装了Bundler，那么需要在你的项目库中建立一个名为Gemfile的文件，文件内容为：&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;source &amp;#39;https://ruby.taobao.org&amp;#39;&lt;/p&gt;
-&lt;p&gt;gem &amp;#39;github-pages&amp;#39;&lt;/p&gt;
+&lt;p&gt;source &#39;https://ruby.taobao.org&#39;&lt;/p&gt;
+&lt;p&gt;gem &#39;github-pages&#39;&lt;/p&gt;
 &lt;/blockquote&gt;
-然后在命令提示行执行&lt;code&gt;bundle install&lt;/code&gt;即可完成Jekyll的安装。如果没有安装Bundler，那直接在命令行执行&lt;code&gt;install github-pages&lt;/code&gt;也可以完成安装。&lt;/p&gt;
+&lt;p&gt;然后在命令提示行执行&lt;code&gt;bundle install&lt;/code&gt;即可完成Jekyll的安装。如果没有安装Bundler，那直接在命令行执行&lt;code&gt;install github-pages&lt;/code&gt;也可以完成安装。&lt;/p&gt;
 
-&lt;h2&gt;&lt;a name=&quot;self&quot;&gt;自建站点（可选）&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;##&lt;a name=&quot;self&quot;&gt;自建站点（可选）&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;配置完环境，就可以开始建站了。我们当然可以选择自己从头建立一个站点，这部分内容可以跟着&lt;a href=&quot;http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html&quot;&gt;阮一峰老师的教程&lt;/a&gt;来做,创建项目的步骤我们已经在之前做完了，可以直接从第二步创建设置文件开始。由于阮一峰老师这个教程是2012年写的，估计那时候还没有.io这种个人主页，所以还需要创建名为‘gh-pages’的分支，现在这种做法只针对项目站点了，在项目库username.github.io中我们只需要在master分支下进行操作即可。&lt;/p&gt;
 
-&lt;p&gt;虽然跟着阮一峰老师的教程做出来的站点很简陋，但是可以大概了解在Github Pages上建站的目录结构。首先在项目库根目录下需要有一个设置文件&amp;quot;_config.yml&amp;quot;，在这里记录了站点名称、作者信息、调用的插件、一些资源的目录等基本信息，在jekyll生成静态页面时会从中读取配置。&lt;/p&gt;
+&lt;p&gt;虽然跟着阮一峰老师的教程做出来的站点很简陋，但是可以大概了解在Github Pages上建站的目录结构。首先在项目库根目录下需要有一个设置文件”_config.yml”，在这里记录了站点名称、作者信息、调用的插件、一些资源的目录等基本信息，在jekyll生成静态页面时会从中读取配置。&lt;/p&gt;
 
-&lt;p&gt;在项目库根目录下的&amp;quot;_layouts&amp;quot;文件夹存放着模板文件，整个站点的所有页面都是在这里的模板的基础上填充具体内容生成的。通常模板有default.html、page.html和post.html三种，default是最底层的模板，定义了所有页面共有的元素，page和post也是在default的基础上构建的。page是除日志外一般页面的模板，而post则是日志页面的模板。&lt;/p&gt;
+&lt;p&gt;在项目库根目录下的”_layouts”文件夹存放着模板文件，整个站点的所有页面都是在这里的模板的基础上填充具体内容生成的。通常模板有default.html、page.html和post.html三种，default是最底层的模板，定义了所有页面共有的元素，page和post也是在default的基础上构建的。page是除日志外一般页面的模板，而post则是日志页面的模板。&lt;/p&gt;
 
-&lt;p&gt;在项目库根目录下的&amp;quot;_posts&amp;quot;文件夹里存放的是所有的日志，创作新的日志只需在这个文件夹新建一个文本文件即可。可以采用html格式或md格式两种，都可以使用Liquid模板语言来调用变量填充页面，在md格式文件中也可以正常使用html元素。日志的文件名需为“年-月-日-标题.后缀名”的格式，jekyll在生成站点时可以自动解析文件名。在每篇文章开始的地方，需要有一个yaml文件头，用来设置一些属性，用”---“标记开始和结束，每行设置一种元数据。通常需要设置的有layout来选择模板，title来设置文章标题（不设置的话则与文件名中的标题相同），excerpt可以设置摘要（不设置的话则默认为文章第一段）。&lt;/p&gt;
+&lt;p&gt;在项目库根目录下的”_posts”文件夹里存放的是所有的日志，创作新的日志只需在这个文件夹新建一个文本文件即可。可以采用html格式或md格式两种，都可以使用Liquid模板语言来调用变量填充页面，在md格式文件中也可以正常使用html元素。日志的文件名需为“年-月-日-标题.后缀名”的格式，jekyll在生成站点时可以自动解析文件名。在每篇文章开始的地方，需要有一个yaml文件头，用来设置一些属性，用”—“标记开始和结束，每行设置一种元数据。通常需要设置的有layout来选择模板，title来设置文章标题（不设置的话则与文件名中的标题相同），excerpt可以设置摘要（不设置的话则默认为文章第一段）。&lt;/p&gt;
 
 &lt;p&gt;在项目库根目录下创建index.html或index.md来作为整个站点的首页，具体格式与日志的格式没有什么区别。通常在首页使用&lt;code&gt;&lt;a&gt;{&lt;/a&gt;% for post in site.posts %&lt;a&gt;}&lt;/a&gt;&lt;/code&gt;来对所有日志进行遍历，然后调用每一篇日志的标题、摘要等信息显示在主页上。&lt;/p&gt;
 
@@ -411,40 +413,40 @@
 
 &lt;p&gt;修改完所有页面后，在命令行中运行&lt;code&gt;bundle exec jekyll serve&lt;/code&gt;(如果安装了bundler)或者&lt;code&gt;jekyll serve&lt;/code&gt;，等到提示站点生成完成后，在浏览器中打开&lt;a href=&quot;http://localhost:4000/&quot;&gt;localhost:4000&lt;/a&gt;即可在本地预览调试你的页面了。&lt;/p&gt;
 
-&lt;h2&gt;&lt;a name=&quot;module&quot;&gt;使用现有模板&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;##&lt;a name=&quot;module&quot;&gt;使用现有模板&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;对于我们这种没什么HTML和CSS基础的人来说，从阮老师建立的基本框架到一个完整美观的站点无异于跟着网上各种教绘画的教程学绘画一般。&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
-&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//ma.png&quot;/&gt;
+&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//ma.png&quot; /&gt;
 &lt;/div&gt;
 
 &lt;p&gt;所以推荐的做法还是寻找现成的模板，在别人已经完整搭建好的站点的基础上进行修改，快速的制作出属于自己的博客，同时还能逐步熟悉Jekyll的使用。&lt;/p&gt;
 
-&lt;p&gt;目前使用较多的是&lt;a href=&quot;https://github.com/plusjade/jekyll-bootstrap&quot;&gt;Jekyll-Bootstrap&lt;/a&gt;，功能强大，还拥有丰富的Theme可供随时下载切换。但是我试用了一番，感觉对新手还不是很友好，功能太多导致想修改时很多部分找不到应该去哪里修改。而且不知道什么原因，经常会出现&amp;quot;Failed to get header&amp;quot;错误（大概是因为Jekyll Bootstrap需要调用Python 2而我装的是Python 3？）。&lt;/p&gt;
+&lt;p&gt;目前使用较多的是&lt;a href=&quot;https://github.com/plusjade/jekyll-bootstrap&quot;&gt;Jekyll-Bootstrap&lt;/a&gt;，功能强大，还拥有丰富的Theme可供随时下载切换。但是我试用了一番，感觉对新手还不是很友好，功能太多导致想修改时很多部分找不到应该去哪里修改。而且不知道什么原因，经常会出现”Failed to get header”错误（大概是因为Jekyll Bootstrap需要调用Python 2而我装的是Python 3？）。&lt;/p&gt;
 
-&lt;p&gt;建立这个博客，我使用的是&lt;a href=&quot;https://github.com/barryclark/jekyll-now&quot;&gt;Jekyll-now&lt;/a&gt;。这个模板功能完整但又很简单，稍微熟悉一下就可以着手进行修改。基本上把&amp;quot;_config.yml&amp;quot;中的信息修改一下，把images文件夹中的logo修改一下，就可以开始写自己的日志了。需要注意的是，虽然logo采用jpg格式的文件在本地调试都没有问题，但是上传到Github上之后可能会无法显示，因此使用的图片都采用png格式为妥。&lt;/p&gt;
+&lt;p&gt;建立这个博客，我使用的是&lt;a href=&quot;https://github.com/barryclark/jekyll-now&quot;&gt;Jekyll-now&lt;/a&gt;。这个模板功能完整但又很简单，稍微熟悉一下就可以着手进行修改。基本上把”_config.yml”中的信息修改一下，把images文件夹中的logo修改一下，就可以开始写自己的日志了。需要注意的是，虽然logo采用jpg格式的文件在本地调试都没有问题，但是上传到Github上之后可能会无法显示，因此使用的图片都采用png格式为妥。&lt;/p&gt;
 
-&lt;h1&gt;&lt;a name=&quot;markdown&quot;&gt;markdown语言&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;#&lt;a name=&quot;markdown&quot;&gt;markdown语言&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;下面说说markdown语言。我这篇日志是用md格式写的，其中使用到了markdown语言。&lt;/p&gt;
 
 &lt;p&gt;markdown语言就是是用一些特殊的符号来生成html代码，简化格式。在文本中插入HTML标签完全没有问题。此外常用的符号有：&lt;/p&gt;
 
 &lt;blockquote&gt;
-    &lt;p&gt;[显示的文字](链接地址) ： 可以用来设置超链接&lt;/p&gt;
-    &lt;p&gt;![图片名称](图片地址) ： 可以用来显示图片&lt;/p&gt;
-    &lt;p&gt;###标题 ： 设置标题，#数量代表标题级数&lt;/p&gt;
-    &lt;p&gt;*斜体* ： 斜体&lt;/p&gt;
-    &lt;p&gt;**粗体** ： 粗体&lt;/p&gt;
-    &lt;p&gt;***粗斜体*** ： 粗斜体&lt;/p&gt;
-    &lt;p&gt;&gt;引用内容 ： 引用&lt;/p&gt;
-    &lt;p&gt;```代码``` ： 代码&lt;/p&gt;     
+	&lt;p&gt;[显示的文字](链接地址) ： 可以用来设置超链接&lt;/p&gt;
+	&lt;p&gt;![图片名称](图片地址) ： 可以用来显示图片&lt;/p&gt;
+	&lt;p&gt;###标题 ： 设置标题，#数量代表标题级数&lt;/p&gt;
+	&lt;p&gt;*斜体* ： 斜体&lt;/p&gt;
+	&lt;p&gt;**粗体** ： 粗体&lt;/p&gt;
+	&lt;p&gt;***粗斜体*** ： 粗斜体&lt;/p&gt;
+	&lt;p&gt;&amp;gt;引用内容 ： 引用&lt;/p&gt;
+	&lt;p&gt;```代码``` ： 代码&lt;/p&gt;	   
 &lt;/blockquote&gt;
 
-&lt;p&gt;此外还可以使用\来对markdown语言中用到的符号进行转义。使用\表示中文空格，使用&amp;amp;nbsp;表示英文空格。如果需要图片居中等问题，markdown语言就解决不了了，需要直接使用HTML语言。如果想在网页中直接显示markdown语句，那么就在大括号、中括号两端加&amp;lt;a&amp;gt;标签就好啦！&lt;/p&gt;
+&lt;p&gt;此外还可以使用\来对markdown语言中用到的符号进行转义。使用\表示中文空格，使用\ 表示英文空格。如果需要图片居中等问题，markdown语言就解决不了了，需要直接使用HTML语言。如果想在网页中直接显示markdown语句，那么就在大括号、中括号两端加&amp;lt;a&amp;gt;标签就好啦！&lt;/p&gt;
 
-&lt;h1&gt;&lt;a name=&quot;tages&quot;&gt;日志分类&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;#&lt;a name=&quot;tages&quot;&gt;日志分类&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;最后说说日志的分类。虽然我现在写的是博客的第一篇日志，但是想到我感兴趣的东西那么多，而且还在与日俱增，可以预见到未来整个博客一定是杂乱无章的。因此需要未雨绸缪，提前建设好日志分类的系统。&lt;/p&gt;
 
@@ -456,7 +458,7 @@
 &lt;p&gt;&lt;a&gt;{&lt;/a&gt;% for post in tag[1] %&lt;a&gt;}&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a&gt;[&lt;/a&gt;&lt;a&gt;{&lt;/a&gt;&lt;a&gt;{&lt;/a&gt; post.title &lt;a&gt;}&lt;/a&gt;&lt;a&gt;}&lt;/a&gt;&lt;a&gt;]&lt;/a&gt;(&lt;a&gt;{&lt;/a&gt;&lt;a&gt;{&lt;/a&gt; post.url &lt;a&gt;}&lt;/a&gt;&lt;a&gt;}&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;&lt;a&gt;{&lt;/a&gt;% endfor %&lt;a&gt;}&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a&gt;{&lt;/a&gt;% endfor %&lt;a&gt;}&lt;/a&gt;&lt;/p&gt;   
+&lt;p&gt;&lt;a&gt;{&lt;/a&gt;% endfor %&lt;a&gt;}&lt;/a&gt;&lt;/p&gt;	
 &lt;/blockquote&gt;
 
 &lt;p&gt;从建站到这第一篇日志的发表，一共就用到了以上内容，未来就要开始愉快的写博客的日子了，如果再遇到更高级的问题，会新开日志或回到本日志来补充。&lt;/p&gt;
