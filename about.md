@@ -1,12 +1,7 @@
 ---
 layout: page
-title: About
+title: 蔡大魔王
 permalink: /about/
 ---
 
-蔡大魔王的个人博客，记录学习到的各方各面的知识，以作备忘。
-
-
-### Contact me
-
-[bigmonstercai@qq.com](mailto:bigmonstercai@qq.com)
+我喜欢瞎鼓捣，从初中起就各种玩儿，但是广度有余深度不足，从今天起在这里记录一些玩儿的过程心得，希望能有所沉淀，未来在一些领域也能继续深入发展。

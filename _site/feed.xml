@@ -1,10 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Bigmonstercai</title>
-    <description>Is Learning</description>
-    <link>http://bigmonstercai.github.io</link>
-    <atom:link href="http://bigmonstercai.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <title>Bigmonstercai is Learning</title>
+    <description>鼓捣 记录 玩儿
+</description>
+    <link>http://www.github.io/bigmonstercai/</link>
+    <atom:link href="http://www.github.io/bigmonstercai/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 09 May 2016 17:04:45 +0800</pubDate>
+    <lastBuildDate>Mon, 09 May 2016 17:04:45 +0800</lastBuildDate>
+    <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>恢复混乱的iBooks数据库</title>
+        <description>&lt;p&gt;之前过年时我在iBooks中把所有PDF和电子书都导入了iBooks，并把书名、作者信息和类别都整理好了。OS X10.11.4 的更新带来了iBooks可以同步PDF的功能，但是我却发现我所有图书的信息也随之全部丢失了。好在我一直都在使用TimeMachine进行备份，因此理论上讲完全可以恢复回来。&lt;/p&gt;
+
+&lt;p&gt;经过查找，我发现iBooks把所有图书都存在了&lt;code&gt;/Users/用户名/Library/Containers/com.apple.BKAgentService/Data/Documents/iBooks/Books&lt;/code&gt;这个位置，同时这个文件夹里还有个&lt;code&gt;books.plist&lt;/code&gt;，里面有所有图书的信息，但是直接修改这个信息好像并没有什么变化。&lt;/p&gt;
+
+&lt;p&gt;之后我又找到了&lt;code&gt;/Users/用户名/Library/Containers/com.apple.iBooksX/Data/Documents&lt;/code&gt;这个文件夹，其中&lt;code&gt;BKLibrary&lt;/code&gt;文件夹内的数据库有着更为全面的图书信息，而&lt;code&gt;BKSeriesDatabase&lt;/code&gt;文件夹里的数据库记录着图书的文集信息（貌似可以像文件夹一样把一套书归到一起，目前我还没用过这个功能），直接修改&lt;code&gt;BKLibrary&lt;/code&gt;文件夹内的数据库相关的键值，再重启iBooks，发现图书信息也发生了相应的变化。因此只要把这个数据库的内容恢复就好了。但是我发现直接把原数据库文件覆盖过来好像也起不到效果，估计是某些键值发生了变化导致通不过校验，因此最好的办法就是只把需要的键值从原数据库中复制过去，其他键值都不要改动。&lt;/p&gt;
+
+&lt;p&gt;把以下代码保存成.py文件，将对应的路径修改好，在终端中使用Python运行即可完成原数据库向现数据库复制的工作。其中ZFILESIZE是图书文件的大小，ZPAGECOUNT为图书文件的页数，ZAUTHOR就是作者信息，ZCOLLECTIONID为精选集信息，ZGENRE为类别信息，ZASSETID为图书文件的编号（这个编号貌似是根据图书文件唯一确定的，因此两个数据库中这个信息是一致的，可以用于检索），ZTITLE则是图书的名称，可以根据个人需求适当增减需要修改的键值，注意execute语句中不要遗漏%s两侧的双引号即可。&lt;/p&gt;
+
+&lt;link rel=&quot;stylesheet&quot; href=&quot;\_sass\_highlights.scss&quot; /&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!usr/bin/python&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# -*- coding:utf-8 -*-&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sqlite3&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;conn0319&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqlite3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;BKLibrary0319/BKLibrary-1-091020131601.sqlite&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# 从TimeMachine中恢复的数据库，改为自己保存的地址&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqlite3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/Users/用户名/Library/Containers/com.apple.iBooksX/Data/Documents/BKLibrary/BKLibrary-1-091020131601.sqlite&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# 现在的数据库，把“用户名”改为自己的用户名&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;cursor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;conn0319&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;SELECT ZFILESIZE, ZPAGECOUNT, ZAUTHOR, ZCOLLECTIONID, ZGENRE, ZASSETID, ZTITLE from ZBKLIBRARYASSET&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cursor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+		&lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;UPDATE ZBKLIBRARYASSET set ZFILESIZE=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d, ZPAGECOUNT=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d, ZAUTHOR=&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;, ZCOLLECTIONID=&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;, ZGENRE=&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot; where ZASSETID=&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;updated&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;except&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqlite3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OperationalError&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ERROR:&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;conn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Sat, 02 Apr 2016 00:00:00 +0800</pubDate>
+        <link>http://www.github.io/bigmonstercai/Recover-book-information-in-iBooks/</link>
+        <guid isPermaLink="true">http://www.github.io/bigmonstercai/Recover-book-information-in-iBooks/</guid>
+        
+        <category>Mac</category>
+        
+        <category>OS X</category>
+        
+        <category>SQL</category>
+        
+        <category>Python</category>
+        
+        
+      </item>
     
       <item>
         <title>在OS X上完成全局一键截图</title>
@@ -29,17 +79,26 @@
   &lt;li&gt;在右侧通用下面找到刚刚新建的服务，指定一个快捷键，以后就可以在任何时候一键截图啦&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-AppleScript&quot;&gt;tell application &quot;Grab&quot; to activate
-    tell application &quot;System Events&quot;
-	    keystroke &quot;a&quot; using {command down, shift down}
-end tell
-&lt;/code&gt;&lt;/pre&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;\_sass\_highlights.scss&quot; /&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-applescript&quot; data-lang=&quot;applescript&quot;&gt;&lt;span class=&quot;k&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Grab&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;activate&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;tell&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;System Events&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+	    &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;keystroke&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;using&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;down&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;down&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;tell&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;换了MacBook Pro快一个月了，发现使用触摸板手势以及PopClip、Alfred等软件可以大大的提高效率。今天又发现使用AppleScript基本上可以随意定制自己想要完成的任务，而Alfred也支持AppleScript脚本，日后在使用过程中可以根据自己的习惯编写各种各样的脚本辅助自己的工作，想想就有点儿小激动呢！&lt;/p&gt;
 </description>
         <pubDate>Wed, 02 Mar 2016 00:00:00 +0800</pubDate>
-        <link>http://bigmonstercai.github.io/Grab-On-Mac/</link>
-        <guid isPermaLink="true">http://bigmonstercai.github.io/Grab-On-Mac/</guid>
+        <link>http://www.github.io/bigmonstercai/Grab-On-Mac/</link>
+        <guid isPermaLink="true">http://www.github.io/bigmonstercai/Grab-On-Mac/</guid>
+        
+        <category>Mac</category>
+        
+        <category>OS X</category>
+        
+        <category>AppleScript</category>
+        
+        
       </item>
     
       <item>
@@ -50,11 +109,11 @@ end tell
 
 &lt;p&gt;在我突发奇想制作&lt;a href=&quot;https://github.com/Bigmonstercai/Music-Album-with-music-albums/&quot;&gt;“来自封面们的封面”&lt;/a&gt;这个可视化效果时，需要从这些音频文件中提取出专辑封面，本文将具体探讨利用Python提取专辑封面的方法。&lt;/p&gt;
 
-&lt;p&gt;#&lt;a name=&quot;Audio&quot;&gt;音乐格式浅析&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;a-nameaudioa&quot;&gt;&lt;a name=&quot;Audio&quot;&gt;音乐格式浅析&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;我的音乐文件主要有MP3文件和M4A文件两种，因此下面我将简要介绍下这两种音频格式，重点为专辑封面是如何嵌入在这两种格式的文件中的。&lt;/p&gt;
 
-&lt;p&gt;##&lt;a name=&quot;MP3&quot;&gt;MP3&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;a-namemp3mp3a&quot;&gt;&lt;a name=&quot;MP3&quot;&gt;MP3&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;MP3文件使用ID3记录歌曲信息。ID3有两个版本，ID3v1在MP3文件的末尾128字节，以TAG开头，记录标题、作者、专辑、出品年代、类型、音轨序号等信息；ID3v2在MP3文件的头部，以ID3开头，由许多“帧”构成，每一帧记录一种属性，可以方便的扩展。下表是ID3v2的结构：&lt;/p&gt;
 
@@ -62,168 +121,94 @@ end tell
 
 &lt;p&gt;以下是ID3v2各帧的定义：&lt;/p&gt;
 &lt;blockquote&gt;
-
-AENC	Audio encryption
-
-APIC	Attached picture
-
-COMM	Comments
-
-COMR	Commercial frame
-
-ENCR	Encryption method registration
-
-EQUA	Equalization
-
-ETCO	Event timing codes
-
-GEOB	General encapsulated object
-
-GRID	Group identification registration
-
-IPLS	Involved people list
-
-LINK	Linked information
-
-MCDI	Music CD identifier
-
-MLLT	MPEG location lookup table
-
-OWNE	Ownership frame
-
-PRIV	Private frame
-
-PCNT	Play counter
-
-POPM	Popularimeter
-
-POSS	Position synchronisation frame
-
-RBUF	Recommended buffer size
-
-RVAD	Relative volume adjustment
-
-RVRB	Reverb
-
-SYLT	Synchronized lyric/text
-
-SYTC	Synchronized tempo codes
-
-TALB	Album/Movie/Show title
-
-TBPM	BPM (beats per minute)
-
-TCOM	Composer
-
-TCON	Content type
-
-TCOP	Copyright message
-
-TDAT	Date
-
-TDLY	Playlist delay
-
-TENC	Encoded by
-
-TEXT	Lyricist/Text writer
-
-TFLT	File type
-
-TIME	Time
-
-TIT1	Content group description
-
-TIT2	Title/songname/content description
-
-TIT3	Subtitle/Description refinement
-
-TKEY	Initial key
-
-TLAN	Language(s)
-
-TLEN	Length
-
-TMED	Media type
-
-TOAL	Original album/movie/show title
-
-TOFN	Original filename
-
-TOLY	Original lyricist(s)/text writer(s)
-
-TOPE	Original artist(s)/performer(s)
-
-TORY	Original release year
-
-TOWN	File owner/licensee
-
-TPE1	Lead performer(s)/Soloist(s)
-
-TPE2	Band/orchestra/accompaniment
-
-TPE3	Conductor/performer refinement
-
-TPE4	Interpreted, remixed, or otherwise modified by
-
-TPOS	Part of a set
-
-TPUB	Publisher
-
-TRCK	Track number/Position in set
-
-TRDA	Recording dates
-
-TRSN	Internet radio station name
-
-TRSO	Internet radio station owner
-
-TSIZ	Size
-
-TSRC	ISRC (international standard recording code)
-
-TSSE	Software/Hardware and settings used for encoding
-
-TYER	Year
-
-TXXX	User defined text information frame
-
-UFID	Unique file identifier
-
-USER	Terms of use
-
-USLT	Unsychronized lyric/text transcription
-
-WCOM	Commercial information
-
-WCOP	Copyright/Legal information
-
-WOAF	Official audio file webpage
-
-WOAR	Official artist/performer webpage
-
-WOAS	Official audio source webpage
-
-WORS	Official internet radio station homepage
-
-WPAY	Payment
-
-WPUB	Publishers official webpage
-
-WXXX	User defined URL link frame
+&lt;pre&gt;AENC   Audio encryption&lt;/pre&gt;
+&lt;pre&gt;APIC   Attached picture&lt;/pre&gt;
+&lt;pre&gt;COMM   Comments&lt;/pre&gt;
+&lt;pre&gt;COMR   Commercial frame&lt;/pre&gt;
+&lt;pre&gt;ENCR   Encryption method registration&lt;/pre&gt;
+&lt;pre&gt;EQUA   Equalization&lt;/pre&gt;
+&lt;pre&gt;ETCO   Event timing codes&lt;/pre&gt;
+&lt;pre&gt;GEOB   General encapsulated object&lt;/pre&gt;
+&lt;pre&gt;GRID   Group identification registration&lt;/pre&gt;
+&lt;pre&gt;IPLS   Involved people list&lt;/pre&gt;
+&lt;pre&gt;LINK   Linked information&lt;/pre&gt;
+&lt;pre&gt;MCDI   Music CD identifier&lt;/pre&gt;
+&lt;pre&gt;MLLT   MPEG location lookup table&lt;/pre&gt;
+&lt;pre&gt;OWNE   Ownership frame&lt;/pre&gt;
+&lt;pre&gt;PRIV   Private frame&lt;/pre&gt;
+&lt;pre&gt;PCNT   Play counter&lt;/pre&gt;
+&lt;pre&gt;POPM   Popularimeter&lt;/pre&gt;
+&lt;pre&gt;POSS   Position synchronisation frame&lt;/pre&gt;
+&lt;pre&gt;RBUF   Recommended buffer size&lt;/pre&gt;
+&lt;pre&gt;RVAD   Relative volume adjustment&lt;/pre&gt;
+&lt;pre&gt;RVRB   Reverb&lt;/pre&gt;
+&lt;pre&gt;SYLT   Synchronized lyric/text&lt;/pre&gt;
+&lt;pre&gt;SYTC   Synchronized tempo codes&lt;/pre&gt;
+&lt;pre&gt;TALB   Album/Movie/Show title&lt;/pre&gt;
+&lt;pre&gt;TBPM   BPM (beats per minute)&lt;/pre&gt;
+&lt;pre&gt;TCOM   Composer&lt;/pre&gt;
+&lt;pre&gt;TCON   Content type&lt;/pre&gt;
+&lt;pre&gt;TCOP   Copyright message&lt;/pre&gt;
+&lt;pre&gt;TDAT   Date&lt;/pre&gt;
+&lt;pre&gt;TDLY   Playlist delay&lt;/pre&gt;
+&lt;pre&gt;TENC   Encoded by&lt;/pre&gt;
+&lt;pre&gt;TEXT   Lyricist/Text writer&lt;/pre&gt;
+&lt;pre&gt;TFLT   File type&lt;/pre&gt;
+&lt;pre&gt;TIME   Time&lt;/pre&gt;
+&lt;pre&gt;TIT1   Content group description&lt;/pre&gt;
+&lt;pre&gt;TIT2   Title/songname/content description&lt;/pre&gt;
+&lt;pre&gt;TIT3   Subtitle/Description refinement&lt;/pre&gt;
+&lt;pre&gt;TKEY   Initial key&lt;/pre&gt;
+&lt;pre&gt;TLAN   Language(s)&lt;/pre&gt;
+&lt;pre&gt;TLEN   Length&lt;/pre&gt;
+&lt;pre&gt;TMED   Media type&lt;/pre&gt;
+&lt;pre&gt;TOAL   Original album/movie/show title&lt;/pre&gt;
+&lt;pre&gt;TOFN   Original filename&lt;/pre&gt;
+&lt;pre&gt;TOLY   Original lyricist(s)/text writer(s)&lt;/pre&gt;
+&lt;pre&gt;TOPE   Original artist(s)/performer(s)&lt;/pre&gt;
+&lt;pre&gt;TORY   Original release year&lt;/pre&gt;
+&lt;pre&gt;TOWN   File owner/licensee&lt;/pre&gt;
+&lt;pre&gt;TPE1   Lead performer(s)/Soloist(s)&lt;/pre&gt;
+&lt;pre&gt;TPE2   Band/orchestra/accompaniment&lt;/pre&gt;
+&lt;pre&gt;TPE3   Conductor/performer refinement&lt;/pre&gt;
+&lt;pre&gt;TPE4   Interpreted, remixed, or otherwise modified by&lt;/pre&gt;
+&lt;pre&gt;TPOS   Part of a set&lt;/pre&gt;
+&lt;pre&gt;TPUB   Publisher&lt;/pre&gt;
+&lt;pre&gt;TRCK   Track number/Position in set&lt;/pre&gt;
+&lt;pre&gt;TRDA   Recording dates&lt;/pre&gt;
+&lt;pre&gt;TRSN   Internet radio station name&lt;/pre&gt;
+&lt;pre&gt;TRSO   Internet radio station owner&lt;/pre&gt;
+&lt;pre&gt;TSIZ   Size&lt;/pre&gt;
+&lt;pre&gt;TSRC   ISRC (international standard recording code)&lt;/pre&gt;
+&lt;pre&gt;TSSE   Software/Hardware and settings used for encoding&lt;/pre&gt;
+&lt;pre&gt;TYER   Year&lt;/pre&gt;
+&lt;pre&gt;TXXX   User defined text information frame&lt;/pre&gt;
+&lt;pre&gt;UFID   Unique file identifier&lt;/pre&gt;
+&lt;pre&gt;USER   Terms of use&lt;/pre&gt;
+&lt;pre&gt;USLT   Unsychronized lyric/text transcription&lt;/pre&gt;
+&lt;pre&gt;WCOM   Commercial information&lt;/pre&gt;
+&lt;pre&gt;WCOP   Copyright/Legal information&lt;/pre&gt;
+&lt;pre&gt;WOAF   Official audio file webpage&lt;/pre&gt;
+&lt;pre&gt;WOAR   Official artist/performer webpage&lt;/pre&gt;
+&lt;pre&gt;WOAS   Official audio source webpage&lt;/pre&gt;
+&lt;pre&gt;WORS   Official internet radio station homepage&lt;/pre&gt;
+&lt;pre&gt;WPAY   Payment&lt;/pre&gt;
+&lt;pre&gt;WPUB   Publishers official webpage&lt;/pre&gt;
+&lt;pre&gt;WXXX   User defined URL link frame&lt;/pre&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;对于专辑封面，我们需要读取的是APIC。&lt;/p&gt;
 
-&lt;p&gt;##&lt;a name=&quot;M4A&quot;&gt;M4A&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;a-namem4am4aa&quot;&gt;&lt;a name=&quot;M4A&quot;&gt;M4A&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;M4A文件也使用了一种类似于ID3的方式按帧存储音频文件的信息，称作ATOM。关于M4A格式的详细说明文档可以到&lt;a href=&quot;http://download.csdn.net/detail/bigmonstercai/9131325&quot;&gt;这里&lt;/a&gt;下载查看，我就不再赘述了。&lt;/p&gt;
 
 &lt;p&gt;在M4A格式的文件中，专辑封面的标志字为covr。&lt;/p&gt;
 
-&lt;p&gt;#&lt;a name=&quot;Image&quot;&gt;图片格式浅析&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;a-nameimagea&quot;&gt;&lt;a name=&quot;Image&quot;&gt;图片格式浅析&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;内嵌在音频文件中的图片通常为JPG或PNG格式的，为了将它们提取出来，我们需要对这两种图片的格式也有所了解。&lt;/p&gt;
 
-&lt;p&gt;##&lt;a name=&quot;JPG&quot;&gt;JPG&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;a-namejpgjpga&quot;&gt;&lt;a name=&quot;JPG&quot;&gt;JPG&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;JPG文件采用&lt;a href=&quot;https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format&quot;&gt;JPEG File Interchange Format(JFIF)&lt;/a&gt;标准，由一系列标记或标记块组成。每个标记有两字节，第一个字节固定为&lt;code&gt;FF&lt;/code&gt;，第二个字节表示标记的类型，不为&lt;code&gt;00&lt;/code&gt;或&lt;code&gt;FF&lt;/code&gt;。JPG文件的开始标记和结束标记分别为&lt;code&gt;FF D8&lt;/code&gt;和&lt;code&gt;FF D9&lt;/code&gt;。整个文件的结构见下表：&lt;/p&gt;
 
@@ -231,7 +216,7 @@ WXXX	User defined URL link frame
 
 &lt;p&gt;对于提取专辑封面，我们只需要知道开始标记和结束标记即可，其他标记的说明可点击本节开头的链接参考维基百科。&lt;/p&gt;
 
-&lt;p&gt;##&lt;a name=&quot;PNG&quot;&gt;PNG&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;a-namepngpnga&quot;&gt;&lt;a name=&quot;PNG&quot;&gt;PNG&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Portable_Network_Graphics&quot;&gt;PNG(Portable Network Graphics)&lt;/a&gt;文件也由若干数据块组成。&lt;/p&gt;
 
@@ -245,7 +230,7 @@ WXXX	User defined URL link frame
 
 &lt;p&gt;如需了解PNG格式的其他详细信息，可以查看它的&lt;a href=&quot;http://www.w3.org/TR/PNG/&quot;&gt;官方说明文档&lt;/a&gt;。&lt;/p&gt;
 
-&lt;p&gt;#&lt;a name=&quot;Python&quot;&gt;利用Python提取专辑封面&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;a-namepythonpythona&quot;&gt;&lt;a name=&quot;Python&quot;&gt;利用Python提取专辑封面&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;了解了上述信息，就可以开始利用Python编写程序提取音频文件中的专辑封面了。&lt;/p&gt;
 
@@ -265,38 +250,38 @@ WXXX	User defined URL link frame
 &lt;link rel=&quot;stylesheet&quot; href=&quot;\_sass\_highlights.scss&quot; /&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;readAPIC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;artist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;album&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;fp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;rb&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;.m4a&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;covr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;covr&amp;#39;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;.mp3&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;covr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;ID3&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;fp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;rb&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;.m4a&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;covr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;covr&#39;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;.mp3&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;covr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;ID3&#39;&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;.png&amp;#39;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x89\x50\x4E\x47\x0D\x0A\x1A\x0A&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 默认为png,因为png的文件头长，误匹配到的概率低&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x00\x00\x00\x00\x49\x45\x4E\x44\xAE\x42\x60\x82&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;.png&#39;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x89\x50\x4E\x47\x0D\x0A\x1A\x0A&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;#  默认为png,因为png的文件头长，误匹配到的概率低&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x00\x00\x00\x00\x49\x45\x4E\x44\xAE\x42\x60\x82&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;covr_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;covr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;covr_num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;start_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;end_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# 不为png则为jpg&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xFF\xD8&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xFF\xD9&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;#  不为png则为jpg&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xFF\xD8&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xFF\xD9&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;start_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;end_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;.jpg&amp;#39;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;.jpg&#39;&lt;/span&gt;
 
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;.jpg&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;.jpg&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start_num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
             &lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;.png&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;.png&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
         &lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start_num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
         &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
             &lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
 
-    &lt;span class=&quot;n&quot;&gt;fo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;images/&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;artist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;-&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;album&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;wb&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;fo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;images/&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;artist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;-&#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;album&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imagetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;wb&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;fo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
     &lt;span class=&quot;n&quot;&gt;fp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
@@ -305,8 +290,16 @@ WXXX	User defined URL link frame
 
 </description>
         <pubDate>Mon, 21 Sep 2015 00:00:00 +0800</pubDate>
-        <link>http://bigmonstercai.github.io/Get-Album-Cover-from-Music/</link>
-        <guid isPermaLink="true">http://bigmonstercai.github.io/Get-Album-Cover-from-Music/</guid>
+        <link>http://www.github.io/bigmonstercai/Get-Album-Cover-from-Music/</link>
+        <guid isPermaLink="true">http://www.github.io/bigmonstercai/Get-Album-Cover-from-Music/</guid>
+        
+        <category>Python</category>
+        
+        <category>Audio</category>
+        
+        <category>Music Album with music albums</category>
+        
+        
       </item>
     
       <item>
@@ -338,7 +331,7 @@ WXXX	User defined URL link frame
 
 &lt;p&gt;下面，我就记录下我这个博客搭建的过程，给其他想在Github Pages上搭建博客的同学一些参考，也方便未来我想把这个博客推倒重盖时，不用再花那么多时间……&lt;/p&gt;
 
-&lt;p&gt;#&lt;a name=&quot;Github&quot;&gt;在Github上新建项目库&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;a-namegithubgithuba&quot;&gt;&lt;a name=&quot;Github&quot;&gt;在Github上新建项目库&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;既然选择了Github Pages，那肯定已经注册过Github账号了吧？（废话！不注册怎么交友）&lt;/p&gt;
 
@@ -346,35 +339,35 @@ WXXX	User defined URL link frame
 
 &lt;p&gt;然后可以跟着&lt;a href=&quot;https://pages.github.com/&quot;&gt;官方的教程&lt;/a&gt;先建立一个名为”username.github.io”的项目库（username为Github账号），并利用Git同步到本地。&lt;/p&gt;
 
-&lt;p&gt;#&lt;a name=&quot;auto&quot;&gt;自动生成（可选）&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;a-nameautoa&quot;&gt;&lt;a name=&quot;auto&quot;&gt;自动生成（可选）&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;在Github上可以自动生成一个主页，不过这个主页有点儿太简单，都不能显示最新的日志，根本就没用到Jekyll，连用来学习的价值都没有。&lt;/p&gt;
 
-&lt;p&gt;####进入”username.github.io”项目库,点击右侧的“Settings”&lt;/p&gt;
+&lt;h4 id=&quot;usernamegithubiosettings&quot;&gt;进入”username.github.io”项目库,点击右侧的“Settings”&lt;/h4&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//1.png&quot; alt=&quot;1&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;####点击“Launch automatic page generator”&lt;/p&gt;
+&lt;h4 id=&quot;launch-automatic-page-generator&quot;&gt;点击“Launch automatic page generator”&lt;/h4&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//2.png&quot; alt=&quot;2&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;####输入页面标题（Page name）、标语（Tagline）和正文，点击“Continue to layouts”&lt;/p&gt;
+&lt;h4 id=&quot;page-nametaglinecontinue-to-layouts&quot;&gt;输入页面标题（Page name）、标语（Tagline）和正文，点击“Continue to layouts”&lt;/h4&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//3.png&quot; alt=&quot;3&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;####最后选择一个喜欢的模板，点击“Publish page”就完成啦！&lt;/p&gt;
+&lt;h4 id=&quot;publish-page&quot;&gt;最后选择一个喜欢的模板，点击“Publish page”就完成啦！&lt;/h4&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images//Build-Blog-on-Github-Pages//4.png&quot; alt=&quot;4&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;自动生成页面虽然操作简单，也还挺漂亮，但是只有这一个页面，如果想增加功能、新建日志恐怕需要有一些HTML和CSS的基础了（反正我没有）。总之如果想建立一个博客，自动生成之后还有很多路要走，不是很推荐使用这个方法。&lt;/p&gt;
 
-&lt;p&gt;#&lt;a name=&quot;manual&quot;&gt;手工搭建&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;a-namemanuala&quot;&gt;&lt;a name=&quot;manual&quot;&gt;手工搭建&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;说是手工搭建，其实也是可以利用网上现成的模板的，不过在这之前我们最好把Jekyll安装好，方便在本地进行调试。&lt;/p&gt;
 
-&lt;p&gt;##&lt;a name=&quot;Jekyll&quot;&gt;安装Jekyll&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;a-namejekylljekylla&quot;&gt;&lt;a name=&quot;Jekyll&quot;&gt;安装Jekyll&lt;/a&gt;&lt;/h2&gt;
 
-&lt;p&gt;这一步我依然是安装&lt;a href=&quot;https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll&quot;&gt;官方教程&lt;/a&gt;走的。不用理会那个GitHub Pages Gem，直接从安装Ruby开始即可，windows用户可以直接下载&lt;a href=&quot;http://rubyinstaller.org/downloads/&quot;&gt;RubyInstallers&lt;/a&gt;安装。不要着急，在这个页面中往下翻，有个DEVELOPMENT KIT,这个也是需要用到的，下载合适自己使用的版本(32位和64位一定不要弄错)。&lt;/p&gt;
+&lt;p&gt;这一步我依然是安装&lt;a href=&quot;https://help.github.com/articles/using-jekyll-with-pages/# installing-jekyll&quot;&gt;官方教程&lt;/a&gt;走的。不用理会那个GitHub Pages Gem，直接从安装Ruby开始即可，windows用户可以直接下载&lt;a href=&quot;http://rubyinstaller.org/downloads/&quot;&gt;RubyInstallers&lt;/a&gt;安装。不要着急，在这个页面中往下翻，有个DEVELOPMENT KIT,这个也是需要用到的，下载合适自己使用的版本(32位和64位一定不要弄错)。&lt;/p&gt;
 
 &lt;p&gt;安装RubyInstallers，确保Ruby的bin目录在你的环境变量的path中，然后在命令行中输入 &lt;code&gt;gem update --system&lt;/code&gt; 来升级gem。由于某些众所周知的原因，直接用gem命令连接到rubygems.org下载软件包的过程可能并不流畅，因此可以把源替换为淘宝提供的完整镜像源https://ruby.taobao.org/，执行如下指令：&lt;/p&gt;
 &lt;blockquote&gt;
@@ -397,7 +390,7 @@ WXXX	User defined URL link frame
 &lt;/blockquote&gt;
 &lt;p&gt;然后在命令提示行执行&lt;code&gt;bundle install&lt;/code&gt;即可完成Jekyll的安装。如果没有安装Bundler，那直接在命令行执行&lt;code&gt;install github-pages&lt;/code&gt;也可以完成安装。&lt;/p&gt;
 
-&lt;p&gt;##&lt;a name=&quot;self&quot;&gt;自建站点（可选）&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;a-nameselfa&quot;&gt;&lt;a name=&quot;self&quot;&gt;自建站点（可选）&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;配置完环境，就可以开始建站了。我们当然可以选择自己从头建立一个站点，这部分内容可以跟着&lt;a href=&quot;http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html&quot;&gt;阮一峰老师的教程&lt;/a&gt;来做,创建项目的步骤我们已经在之前做完了，可以直接从第二步创建设置文件开始。由于阮一峰老师这个教程是2012年写的，估计那时候还没有.io这种个人主页，所以还需要创建名为‘gh-pages’的分支，现在这种做法只针对项目站点了，在项目库username.github.io中我们只需要在master分支下进行操作即可。&lt;/p&gt;
 
@@ -413,7 +406,7 @@ WXXX	User defined URL link frame
 
 &lt;p&gt;修改完所有页面后，在命令行中运行&lt;code&gt;bundle exec jekyll serve&lt;/code&gt;(如果安装了bundler)或者&lt;code&gt;jekyll serve&lt;/code&gt;，等到提示站点生成完成后，在浏览器中打开&lt;a href=&quot;http://localhost:4000/&quot;&gt;localhost:4000&lt;/a&gt;即可在本地预览调试你的页面了。&lt;/p&gt;
 
-&lt;p&gt;##&lt;a name=&quot;module&quot;&gt;使用现有模板&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;a-namemodulea&quot;&gt;&lt;a name=&quot;module&quot;&gt;使用现有模板&lt;/a&gt;&lt;/h2&gt;
 
 &lt;p&gt;对于我们这种没什么HTML和CSS基础的人来说，从阮老师建立的基本框架到一个完整美观的站点无异于跟着网上各种教绘画的教程学绘画一般。&lt;/p&gt;
 
@@ -427,7 +420,7 @@ WXXX	User defined URL link frame
 
 &lt;p&gt;建立这个博客，我使用的是&lt;a href=&quot;https://github.com/barryclark/jekyll-now&quot;&gt;Jekyll-now&lt;/a&gt;。这个模板功能完整但又很简单，稍微熟悉一下就可以着手进行修改。基本上把”_config.yml”中的信息修改一下，把images文件夹中的logo修改一下，就可以开始写自己的日志了。需要注意的是，虽然logo采用jpg格式的文件在本地调试都没有问题，但是上传到Github上之后可能会无法显示，因此使用的图片都采用png格式为妥。&lt;/p&gt;
 
-&lt;p&gt;#&lt;a name=&quot;markdown&quot;&gt;markdown语言&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;a-namemarkdownmarkdowna&quot;&gt;&lt;a name=&quot;markdown&quot;&gt;markdown语言&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;下面说说markdown语言。我这篇日志是用md格式写的，其中使用到了markdown语言。&lt;/p&gt;
 
@@ -436,7 +429,7 @@ WXXX	User defined URL link frame
 &lt;blockquote&gt;
 	&lt;p&gt;[显示的文字](链接地址) ： 可以用来设置超链接&lt;/p&gt;
 	&lt;p&gt;![图片名称](图片地址) ： 可以用来显示图片&lt;/p&gt;
-	&lt;p&gt;###标题 ： 设置标题，#数量代表标题级数&lt;/p&gt;
+	&lt;p&gt;### 标题 ： 设置标题，# 数量代表标题级数&lt;/p&gt;
 	&lt;p&gt;*斜体* ： 斜体&lt;/p&gt;
 	&lt;p&gt;**粗体** ： 粗体&lt;/p&gt;
 	&lt;p&gt;***粗斜体*** ： 粗斜体&lt;/p&gt;
@@ -446,7 +439,7 @@ WXXX	User defined URL link frame
 
 &lt;p&gt;此外还可以使用\来对markdown语言中用到的符号进行转义。使用\表示中文空格，使用\ 表示英文空格。如果需要图片居中等问题，markdown语言就解决不了了，需要直接使用HTML语言。如果想在网页中直接显示markdown语句，那么就在大括号、中括号两端加&amp;lt;a&amp;gt;标签就好啦！&lt;/p&gt;
 
-&lt;p&gt;#&lt;a name=&quot;tages&quot;&gt;日志分类&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;a-nametagesa&quot;&gt;&lt;a name=&quot;tages&quot;&gt;日志分类&lt;/a&gt;&lt;/h1&gt;
 
 &lt;p&gt;最后说说日志的分类。虽然我现在写的是博客的第一篇日志，但是想到我感兴趣的东西那么多，而且还在与日俱增，可以预见到未来整个博客一定是杂乱无章的。因此需要未雨绸缪，提前建设好日志分类的系统。&lt;/p&gt;
 
@@ -464,8 +457,14 @@ WXXX	User defined URL link frame
 &lt;p&gt;从建站到这第一篇日志的发表，一共就用到了以上内容，未来就要开始愉快的写博客的日子了，如果再遇到更高级的问题，会新开日志或回到本日志来补充。&lt;/p&gt;
 </description>
         <pubDate>Wed, 16 Sep 2015 00:00:00 +0800</pubDate>
-        <link>http://bigmonstercai.github.io/Build-Blog-on-Github-Pages/</link>
-        <guid isPermaLink="true">http://bigmonstercai.github.io/Build-Blog-on-Github-Pages/</guid>
+        <link>http://www.github.io/bigmonstercai/Build-Blog-on-Github-Pages/</link>
+        <guid isPermaLink="true">http://www.github.io/bigmonstercai/Build-Blog-on-Github-Pages/</guid>
+        
+        <category>Github Pages</category>
+        
+        <category>Jekyll</category>
+        
+        
       </item>
     
   </channel>

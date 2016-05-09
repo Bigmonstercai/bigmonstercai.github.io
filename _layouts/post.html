@@ -1,36 +1,17 @@
 ---
 layout: default
 ---
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-<article class="post">
-  <h1>{{ page.title }}</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
+    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p>
+  </header>
 
-  <div class="entry">
+  <div class="post-content" itemprop="articleBody">
     {{ content }}
   </div>
 
-  <div class="date">
-    Written on {{ page.date | date: "%B %e, %Y" }}
-  </div>
-
-  {% include disqus.html %}
 </article>
 
-<a href="#" id="top" class="back"></a>
-<style type="text/css">
-  #top{position:fixed;bottom:20px;right:20px;}
-  .back{background:url( {{ site.baseurl}}/images/back-top.png ) left center no-repeat; width:50px; height:50px; display:inline-block;}
-</style>
-<script type="text/javascript">
-  var a = document.getElementById("top");
-  window.onscroll = function(){
-    var x = document.documentElement.scrollTop || document.body.scrollTop;;
-    if(x > 1000){
-      a.style.display = "inline-block";
-    }
-    if(x <= 1000){
-      a.style.display = "none";
-    }
-  }
-  $('#top').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);return false;});
-</script>
+{% include duoshuo.html %}

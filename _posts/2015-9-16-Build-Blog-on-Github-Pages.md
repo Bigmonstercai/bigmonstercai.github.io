@@ -1,5 +1,4 @@
 ---
-layout: post
 title: 第一篇文章就记录下这个博客搭建的过程吧！
 tags : [Github Pages, Jekyll]
 excerpt : 记录下我这个博客搭建的过程，给其他想在Github Pages上搭建博客的同学一些参考，也方便未来我想把这个博客推倒重盖时，不用再花那么多时间……
@@ -31,7 +30,7 @@ excerpt : 记录下我这个博客搭建的过程，给其他想在Github Pages�
 
 下面，我就记录下我这个博客搭建的过程，给其他想在Github Pages上搭建博客的同学一些参考，也方便未来我想把这个博客推倒重盖时，不用再花那么多时间……
 
-#<a name="Github">在Github上新建项目库</a>
+# <a name="Github">在Github上新建项目库</a>
 
 既然选择了Github Pages，那肯定已经注册过Github账号了吧？（废话！不注册怎么交友）
 
@@ -39,35 +38,35 @@ Github Pages分为用户和组织站点及项目站点两种，用户和组织�
 
 然后可以跟着[官方的教程](https://pages.github.com/)先建立一个名为"username.github.io"的项目库（username为Github账号），并利用Git同步到本地。
 
-#<a name="auto">自动生成（可选）</a>
+# <a name="auto">自动生成（可选）</a>
 
 在Github上可以自动生成一个主页，不过这个主页有点儿太简单，都不能显示最新的日志，根本就没用到Jekyll，连用来学习的价值都没有。
 
-####进入"username.github.io"项目库,点击右侧的“Settings”
+#### 进入"username.github.io"项目库,点击右侧的“Settings”
 
 ![1]({{site.baseurl}}/images/{{ page.url }}/1.png)
 
-####点击“Launch automatic page generator”
+#### 点击“Launch automatic page generator”
 
 ![2]({{site.baseurl}}/images/{{ page.url }}/2.png)
 
-####输入页面标题（Page name）、标语（Tagline）和正文，点击“Continue to layouts”
+#### 输入页面标题（Page name）、标语（Tagline）和正文，点击“Continue to layouts”
 
 ![3]({{site.baseurl}}/images/{{ page.url }}/3.png)
 
-####最后选择一个喜欢的模板，点击“Publish page”就完成啦！
+#### 最后选择一个喜欢的模板，点击“Publish page”就完成啦！
 
 ![4]({{site.baseurl}}/images/{{ page.url }}/4.png)
 
 自动生成页面虽然操作简单，也还挺漂亮，但是只有这一个页面，如果想增加功能、新建日志恐怕需要有一些HTML和CSS的基础了（反正我没有）。总之如果想建立一个博客，自动生成之后还有很多路要走，不是很推荐使用这个方法。
 
-#<a name="manual">手工搭建</a>
+# <a name="manual">手工搭建</a>
 
 说是手工搭建，其实也是可以利用网上现成的模板的，不过在这之前我们最好把Jekyll安装好，方便在本地进行调试。
 
-##<a name="Jekyll">安装Jekyll</a>
+## <a name="Jekyll">安装Jekyll</a>
 
-这一步我依然是安装[官方教程](https://help.github.com/articles/using-jekyll-with-pages/#installing-jekyll)走的。不用理会那个GitHub Pages Gem，直接从安装Ruby开始即可，windows用户可以直接下载[RubyInstallers](http://rubyinstaller.org/downloads/)安装。不要着急，在这个页面中往下翻，有个DEVELOPMENT KIT,这个也是需要用到的，下载合适自己使用的版本(32位和64位一定不要弄错)。
+这一步我依然是安装[官方教程](https://help.github.com/articles/using-jekyll-with-pages/# installing-jekyll)走的。不用理会那个GitHub Pages Gem，直接从安装Ruby开始即可，windows用户可以直接下载[RubyInstallers](http://rubyinstaller.org/downloads/)安装。不要着急，在这个页面中往下翻，有个DEVELOPMENT KIT,这个也是需要用到的，下载合适自己使用的版本(32位和64位一定不要弄错)。
 
 安装RubyInstallers，确保Ruby的bin目录在你的环境变量的path中，然后在命令行中输入 <code>gem update --system</code> 来升级gem。由于某些众所周知的原因，直接用gem命令连接到rubygems.org下载软件包的过程可能并不流畅，因此可以把源替换为淘宝提供的完整镜像源https://ruby.taobao.org/，执行如下指令：
 <blockquote>
@@ -90,7 +89,7 @@ Github Pages分为用户和组织站点及项目站点两种，用户和组织�
 </blockquote>
 然后在命令提示行执行<code>bundle install</code>即可完成Jekyll的安装。如果没有安装Bundler，那直接在命令行执行<code>install github-pages</code>也可以完成安装。
 
-##<a name="self">自建站点（可选）</a>
+## <a name="self">自建站点（可选）</a>
 
 配置完环境，就可以开始建站了。我们当然可以选择自己从头建立一个站点，这部分内容可以跟着[阮一峰老师的教程](http://www.ruanyifeng.com/blog/2012/08/blogging_with_jekyll.html)来做,创建项目的步骤我们已经在之前做完了，可以直接从第二步创建设置文件开始。由于阮一峰老师这个教程是2012年写的，估计那时候还没有.io这种个人主页，所以还需要创建名为‘gh-pages’的分支，现在这种做法只针对项目站点了，在项目库username.github.io中我们只需要在master分支下进行操作即可。
 
@@ -106,7 +105,7 @@ Github Pages分为用户和组织站点及项目站点两种，用户和组织�
 
 修改完所有页面后，在命令行中运行<code>bundle exec jekyll serve</code>(如果安装了bundler)或者<code>jekyll serve</code>，等到提示站点生成完成后，在浏览器中打开[localhost:4000](http://localhost:4000/)即可在本地预览调试你的页面了。
 
-##<a name="module">使用现有模板</a>
+## <a name="module">使用现有模板</a>
 
 对于我们这种没什么HTML和CSS基础的人来说，从阮老师建立的基本框架到一个完整美观的站点无异于跟着网上各种教绘画的教程学绘画一般。
 
@@ -120,7 +119,7 @@ Github Pages分为用户和组织站点及项目站点两种，用户和组织�
 
 建立这个博客，我使用的是[Jekyll-now](https://github.com/barryclark/jekyll-now)。这个模板功能完整但又很简单，稍微熟悉一下就可以着手进行修改。基本上把"_config.yml"中的信息修改一下，把images文件夹中的logo修改一下，就可以开始写自己的日志了。需要注意的是，虽然logo采用jpg格式的文件在本地调试都没有问题，但是上传到Github上之后可能会无法显示，因此使用的图片都采用png格式为妥。
 
-#<a name="markdown">markdown语言</a>
+# <a name="markdown">markdown语言</a>
 
 下面说说markdown语言。我这篇日志是用md格式写的，其中使用到了markdown语言。
 
@@ -129,7 +128,7 @@ markdown语言就是是用一些特殊的符号来生成html代码，简化格�
 <blockquote>
 	<p>[显示的文字](链接地址) ： 可以用来设置超链接</p>
 	<p>![图片名称](图片地址) ： 可以用来显示图片</p>
-	<p>###标题 ： 设置标题，#数量代表标题级数</p>
+	<p>### 标题 ： 设置标题，# 数量代表标题级数</p>
 	<p>*斜体* ： 斜体</p>
 	<p>**粗体** ： 粗体</p>
 	<p>***粗斜体*** ： 粗斜体</p>
@@ -139,7 +138,7 @@ markdown语言就是是用一些特殊的符号来生成html代码，简化格�
 
 此外还可以使用\来对markdown语言中用到的符号进行转义。使用\表示中文空格，使用\&nbsp;表示英文空格。如果需要图片居中等问题，markdown语言就解决不了了，需要直接使用HTML语言。如果想在网页中直接显示markdown语句，那么就在大括号、中括号两端加\<a\>标签就好啦！
 
-#<a name="tages">日志分类</a>
+# <a name="tages">日志分类</a>
 
 最后说说日志的分类。虽然我现在写的是博客的第一篇日志，但是想到我感兴趣的东西那么多，而且还在与日俱增，可以预见到未来整个博客一定是杂乱无章的。因此需要未雨绸缪，提前建设好日志分类的系统。
 

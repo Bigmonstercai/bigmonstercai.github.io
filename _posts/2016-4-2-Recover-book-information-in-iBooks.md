@@ -1,5 +1,4 @@
 ---
-layout: post
 title: 恢复混乱的iBooks数据库
 tags : [Mac, OS X, SQL, Python]
 excerpt : 更新10.11.4后iBooks数据库混乱了，如果你有TimeMachine备份，可以使用我的脚本恢复

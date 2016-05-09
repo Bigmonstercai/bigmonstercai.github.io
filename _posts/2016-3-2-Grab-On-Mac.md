@@ -1,5 +1,4 @@
 ---
-layout: post
 title: 在OS X上完成全局一键截图
 tags : [Mac, OS X, AppleScript]
 excerpt : 编写一个简单的AppleScript脚本，在OS X下全局一键截图
