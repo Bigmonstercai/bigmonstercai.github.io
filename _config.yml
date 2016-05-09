@@ -11,7 +11,7 @@ email: bigmonstercai@qq.com
 description: > # this means to ignore newlines until "baseurl:"
   鼓捣 记录 玩儿
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://www.github.io/bigmonstercai" # the base hostname & protocol for your site
+url: "http://bigmonstercai.github.io/" # the base hostname & protocol for your site
 twitter_username: bigmonstercai
 github_username:  bigmonstercai
 
